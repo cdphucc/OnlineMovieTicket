@@ -1,11 +1,10 @@
-﻿@model List<OnlineMovieTicket.Models.Seat>
-@{
-    var showTimeId = ViewBag.ShowTimeId;
-    decimal seatPrice = ViewBag.SeatPrice;
-    var userId = ViewBag.UserId;
-    var rowsOrder = Model.Select(s => s.Row).Distinct().OrderBy(r => r).ToList();
-    var seatsByRow = Model.GroupBy(s => s.Row).ToDictionary(g => g.Key, g => g.OrderBy(s => s.SeatNumber).ToList());
-    int maxCols = Model.Max(s => int.Parse(s.SeatNumber.Substring(1)));
+﻿@{
+    var showTime = (OnlineMovieTicket.Models.ShowTime)ViewBag.ShowTime;
+    var seats = (List<OnlineMovieTicket.Models.Seat>)ViewBag.Seats;
+    var bookedSeatIds = (List<int>)ViewBag.BookedSeatIds;
+    ViewBag.Title = "Đặt vé";
+    var rows = seats.Select(s => s.SeatNumber.Substring(0, 1)).Distinct().OrderBy(x => x).ToList();
+    var maxCol = seats.Select(s => int.Parse(s.SeatNumber.Substring(1))).Max();
 }
 
 <style>
@@ -13,282 +12,199 @@
         display: flex;
     }
 
-    .seat-table {
-        border-collapse: collapse;
+    .seat-grid {
+        display: grid;
+        grid-template-columns: 60px repeat( @maxCol, 48px);
+        gap: 4px;
+        background: #f3ffff;
+        border: 1px solid #e0e0e0;
+        padding: 10px;
+        overflow-x: auto;
     }
 
-        .seat-table td, .seat-table th {
-            border: 1px solid #e5e5e5;
-            padding: 6px;
-            text-align: center;
-            min-width: 42px;
-        }
+    .seat-label {
+        width: 60px;
+        text-align: center;
+        background: #1cb6e0;
+        color: #fff;
+        border-radius: 4px;
+        writing-mode: vertical-lr;
+        font-weight: bold;
+        padding: 4px 0;
+    }
 
-        .seat-table .row-label {
-            background: #26b0b7;
-            color: #fff;
-            font-weight: bold;
-            min-width: 65px;
-        }
+    .seat-cell {
+        width: 48px;
+        height: 40px;
+        background: #e7fcfc;
+        border: 1px solid #d9f5f5;
+        border-radius: 4px;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 38px;
+        font-weight: 500;
+        position: relative;
+        cursor: pointer;
+        transition: border .2s;
+        user-select: none;
+    }
 
-    .seat-box {
-        display: inline-block;
-        width: 36px;
-        height: 36px;
-        line-height: 36px;
-        border-radius: 6px;
-        margin: 2px;
+    .seat-sold {
+        background: #f2f2f2;
+        color: #aaa;
+        border-color: #ccc;
+        cursor: not-allowed;
+    }
+
+    .seat-selected {
+        border: 2px solid #f00;
+        color: #d00;
+        background: #fff;
+        font-weight: bold;
+    }
+
+    .screen-header {
+        grid-column: 1 / span @((maxCol + 1));
+        text-align: center;
+        background: #cccccc;
+        border-radius: 2px;
+        margin-bottom: 8px;
+        font-weight: bold;
+        padding: 4px 0;
+    }
+
+    .ticket-info-box {
+        min-width: 220px;
+        min-height: 120px;
+        border: 2px solid #1976d2;
+        border-radius: 8px;
+        padding: 6px 10px 14px 10px;
+        margin-left: 18px;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .seat-checkbox {
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 2;
         cursor: pointer;
     }
 
-        .seat-box input[type="checkbox"] {
-            display: none;
-        }
-
-    .seat-available {
-        background: #eafcfd;
-        color: #222;
-        border: 1px solid #cfe6eb;
+    .seat-label-number {
+        position: relative;
+        z-index: 1;
+        pointer-events: none;
     }
 
-    .seat-selecting {
-        background: #c6f6d5;
-        color: #008000;
-        border: 2px solid #38a169;
-        font-weight: bold;
-    }
-
-    .seat-holding {
-        background: #f6eaa0;
-        color: #b7950b;
-        border: 2px solid #f1c40f;
-        cursor: not-allowed;
-    }
-
-    .seat-booked {
-        background: #ef9a9a;
-        color: #c62828;
-        border: 2px solid #e57373;
-        cursor: not-allowed;
-    }
-
-    .seat-box-label {
-        font-size: 14px;
-        font-weight: bold;
-    }
-
-    .screen-label {
-        text-align: center;
-        margin: 12px 0 18px 0;
-        font-weight: bold;
-        color: #1caabf;
-    }
-
-    .ticket-info-panel {
-        min-width: 340px;
-        padding: 18px 24px;
-        margin-left: 32px;
-        border: 2px solid #298be6;
-        border-radius: 12px;
-        background: #fff;
-        height: fit-content;
-    }
-
-        .ticket-info-panel h3 {
-            margin-top: 0;
-        }
-
-        .ticket-info-panel .row {
-            margin-bottom: 8px;
-        }
-
-        .ticket-info-panel .seat-price {
-            float: right;
-        }
-
-        .ticket-info-panel .total {
-            font-weight: bold;
-            font-size: 20px;
-            margin-top: 16px;
-        }
-
-    .seat-legend span {
-        margin-right: 16px;
-    }
-
-    .seat-legend .avail {
-        color: #222;
-    }
-
-    .seat-legend .booked {
-        color: #c62828;
-    }
-
-    .seat-legend .select {
-        color: #38a169;
-    }
-
-    .seat-legend .hold {
-        color: #b7950b;
+    #bookBtn {
+        width: 100%;
+        margin-top: 14px;
     }
 </style>
 
-<div class="seat-legend" style="margin-bottom:8px;">
-    <span class="avail"><i class="fa fa-car"></i> Chưa bán</span>
-    <span class="booked"><i class="fa fa-car"></i> Đã bán</span>
-    <span class="select"><i class="fa fa-car"></i> Đang chọn</span>
-    <span class="hold"><i class="fa fa-car"></i> Đang chờ</span>
-</div>
-<div style="margin-bottom:10px;text-align:center">
-    <div style="width:50%;margin:0 auto;text-align:center;background:#ddd;border:1px solid #aaa;border-radius:4px;">
-        <b>Màn Hình</b>
-    </div>
-</div>
 <div class="seat-layout-container">
-    <form id="bookingForm" method="post" asp-action="Book" style="flex: 1;">
-        @Html.AntiForgeryToken()
-        <input type="hidden" name="showTimeId" value="@showTimeId" />
-
-        <table class="seat-table">
-            <tbody>
-                @foreach (var row in rowsOrder)
+    <div style="overflow-x:auto; overflow-y:auto; max-width:900px; max-height:520px;">
+        <form id="bookingForm" method="post" asp-action="Book" autocomplete="off">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="showTimeId" value="@showTime.Id" />
+            <div class="seat-grid">
+                <div class="screen-header" style="grid-column:1/@((maxCol+2));">Màn Hình</div>
+                @foreach (var row in rows)
                 {
-                    <tr>
-                        <td class="row-label">@row<br /><span style="font-size:12px;">GHẾ ĐƠN</span></td>
-                        @{
-                            var seatList = seatsByRow[row];
-                            int seatIndex = 0;
-                            for (int col = 1; col <= maxCols; col++)
-                            {
-                                if (seatIndex < seatList.Count && int.Parse(seatList[seatIndex].SeatNumber.Substring(1)) == col)
-                                {
-                                    var seat = seatList[seatIndex];
-                                    var seatClass = seat.Status == "Booked" ? "seat-booked"
-                                    : seat.Status == "Selecting" ? "seat-selecting"
-                                    : seat.Status == "Holding" ? "seat-holding"
-                                    : "seat-available";
-                                    <td>
-                                        <label class="seat-box @seatClass">
-                                            <input type="checkbox" name="seatIds" value="@seat.Id"
-                                                   data-seatnumber="@seat.SeatNumber"
-                                            @(seat.Status != "Available" && seat.Status != "Selecting" ? "disabled" : "")
-                                            @(seat.Status == "Selecting" ? "checked" : "") />
-                                            <span class="seat-box-label">@seat.SeatNumber</span>
-                                        </label>
-                                    </td>
-                                    seatIndex++;
-                                }
-                                else
-                                {
-                                    <td></td>
-                                }
-                            }
+                    <div class="seat-label">@row<br /><span style="font-size:12px;">@((row == "J") ? "GHẾ ĐÔI" : "GHẾ ĐƠN")</span></div>
+                    for (int col = 1; col <= maxCol; col++)
+                    {
+                        var seatNum = row + col.ToString();
+                        var seat = seats.FirstOrDefault(s => s.SeatNumber == seatNum);
+                        if (seat == null)
+                        {
+                            <div style="width:48px;"></div>
+                            continue;
                         }
-                    </tr>
+                        bool sold = bookedSeatIds.Contains(seat.Id);
+                        <div class="seat-cell @(sold ? "seat-sold" : "")" title="@seat.SeatNumber">
+                            <input type="checkbox"
+                                   class="seat-checkbox"
+                                   name="seatIds"
+                                   value="@seat.Id"
+                            @(sold ? "disabled" : "")
+                                   id="seat_@seat.Id" />
+                            <span class="seat-label-number">@seat.SeatNumber</span>
+                        </div>
+                    }
                 }
-            </tbody>
-        </table>
-    </form>
-    <div class="ticket-info-panel" id="ticketInfoPanel">
-        <h3>Thông tin vé</h3>
-        <div id="ticketInfoContent">
-            <span>Chưa chọn ghế nào</span>
+            </div>
+            <!-- Đóng form ở cuối thông tin vé để nút đặt vé nằm trong form-->
+            <div style="display:none">
+                <button type="submit"></button>
+            </div>
+        </form>
+    </div>
+    <div>
+        <div class="ticket-info-box">
+            <div>
+                <b>Thông tin vé</b>
+                <div id="ticketInfoContent"></div>
+            </div>
+            <button type="submit" id="bookBtn" class="btn btn-primary" form="bookingForm">Đặt vé</button>
         </div>
     </div>
 </div>
-<div style="margin-top:16px;">
-    <button id="bookBtn" class="btn btn-primary" style="font-weight:bold;">Đặt vé</button>
-    <button id="cancelBtn" class="btn btn-danger" style="font-weight:bold;">Thoát</button>
-    <span id="timeleft" style="font-size:18px;font-weight:bold;margin-left:24px;"></span>
-</div>
 
 <script>
-    let seatPrice = @seatPrice;
-    let maxSeats = 5;
-    let holdTimeout = 5 * 60; // seconds
-    let timeLeft = holdTimeout;
-    let timerInterval;
+    const maxSeats = 5;
+    const seatPrice = @showTime.Price.ToString(System.Globalization.CultureInfo.InvariantCulture)
 
-    function formatCurrency(val) {
-        return val.toLocaleString('vi-VN') + " đ";
-    }
-
-    function updateTicketInfo() {
-        let checked = document.querySelectorAll('input[name="seatIds"]:checked');
-        let infoPanel = document.getElementById('ticketInfoContent');
-        if (checked.length === 0) {
-            infoPanel.innerHTML = "<span>Chưa chọn ghế nào</span>";
-        } else {
-            let html = `<div>Đã chọn: <b>${checked.length} vé</b></div>`;
-            html += "<div><b>GHẾ ĐƠN:</b></div>";
-            checked.forEach(el => {
-                html += `<div class="row">Ghế <b>${el.getAttribute("data-seatnumber")}</b>: <span class="seat-price">${formatCurrency(seatPrice)}</span></div>`;
-            });
-            html += `<div class="total">Tổng cộng: ${formatCurrency(checked.length * seatPrice)}</div>`;
-            infoPanel.innerHTML = html;
-        }
-    }
-
-    function updateSeatSelecting() {
-        document.querySelectorAll('.seat-box').forEach(el => el.classList.remove('seat-selecting'));
-        document.querySelectorAll('input[name="seatIds"]:checked').forEach(el => el.parentElement.classList.add('seat-selecting'));
-    }
-
-    document.querySelectorAll('input[name="seatIds"]').forEach(el => {
-        el.addEventListener('change', function () {
-            let checked = document.querySelectorAll('input[name="seatIds"]:checked');
+    document.querySelectorAll('.seat-checkbox').forEach(cb => {
+        cb.addEventListener('change', function() {
+            let checked = document.querySelectorAll('.seat-checkbox:checked');
             if (checked.length > maxSeats) {
                 this.checked = false;
                 alert("Bạn chỉ được chọn tối đa 5 ghế!");
             }
-            // Gửi giữ ghế lên server
-            fetch('/Booking/HoldSeat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    showTimeId: @showTimeId,
-                    seatId: parseInt(this.value),
-                    select: this.checked
-                })
-            });
+            updateSelected();
             updateTicketInfo();
-            updateSeatSelecting();
         });
     });
 
-    updateTicketInfo();
-    updateSeatSelecting();
-
-    // Đếm ngược giữ ghế
-    function startTimer() {
-        clearInterval(timerInterval);
-        timeLeft = holdTimeout;
-        timerInterval = setInterval(function() {
-            document.getElementById('timeleft').innerText = `${Math.floor(timeLeft / 60)}:${(timeLeft % 60).toString().padStart(2, '0')}`;
-            if (--timeLeft < 0) {
-                clearInterval(timerInterval);
-                alert("Hết thời gian giữ ghế. Vui lòng chọn lại.");
-                // Release all holds
-                fetch('/Booking/ReleaseAll', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ showTimeId: @showTimeId })
-                }).then(() => location.reload());
-            }
-        }, 1000);
+    function updateSelected() {
+        document.querySelectorAll('.seat-cell').forEach(cell => cell.classList.remove('seat-selected'));
+        document.querySelectorAll('.seat-checkbox:checked').forEach(cb => {
+            cb.closest('.seat-cell').classList.add('seat-selected');
+        });
     }
-    startTimer();
+    function formatCurrency(val) {
+        return Number(val).toLocaleString('vi-VN') + " đ";
+    }
+    function updateTicketInfo() {
+        let checked = document.querySelectorAll('.seat-checkbox:checked');
+        let infoPanel = document.getElementById('ticketInfoContent');
+        if (checked.length === 0) {
+            infoPanel.innerHTML = "";
+        } else {
+            let html = "";
+            checked.forEach(el => {
+                html += `<div>Ghế <b>${el.closest('.seat-cell').innerText.trim()}</b></div>`;
+            });
+            html += `<div style="margin-top:8px;font-weight:bold;">Tổng: ${formatCurrency(checked.length * seatPrice)}</div>`;
+            infoPanel.innerHTML = html;
+        }
+    }
+    updateSelected();
+    updateTicketInfo();
 
-    document.getElementById('bookBtn').onclick = function() {
-        document.getElementById('bookingForm').requestSubmit();
-    };
-
-    document.getElementById('bookingForm').addEventListener('submit', function (e) {
+        document.getElementById('bookingForm').addEventListener('submit', function (e) {
         e.preventDefault();
         const formData = new FormData(this);
-        fetch('/Booking/Book', {
+        fetch('/Bookings/Book', {
             method: 'POST',
             body: formData,
             headers: {
@@ -297,21 +213,11 @@
         })
         .then(r => r.json())
         .then(data => {
-            if (data.success) {
-                alert("Đặt vé thành công!");
-                window.location.reload();
+            if (data.success && data.redirectUrl) {
+                window.location.href = data.redirectUrl;
             } else {
                 alert("Đặt vé thất bại: " + data.message);
             }
         });
     });
-
-    // Huỷ giữ ghế khi bấm "Thoát"
-    document.getElementById('cancelBtn').onclick = function() {
-        fetch('/Booking/ReleaseAll', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ showTimeId: @showTimeId })
-        }).then(() => location.reload());
-    };
 </script>

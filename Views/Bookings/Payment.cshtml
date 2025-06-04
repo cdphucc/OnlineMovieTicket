@@ -1,0 +1,21 @@
+﻿@model OnlineMovieTicket.Models.Booking
+@{
+    ViewBag.Title = "Thanh toán";
+}
+<h2>Thanh toán vé xem phim</h2>
+<p>Mã đặt vé: <b>@Model.Id</b></p>
+<p>Phim: <b>@Model.BookingDetails.First().ShowTime.Movie.Title</b></p>
+<p>Suất chiếu: <b>@Model.BookingDetails.First().ShowTime.StartTime.ToString("dd/MM/yyyy HH:mm")</b></p>
+<p>Ghế:
+    @foreach (var detail in Model.BookingDetails)
+    {
+        <span>@detail.Seat.SeatNumber </span>
+    }
+</p>
+<p>Tổng tiền: <b>@Model.TotalAmount.ToString("n0") VNĐ</b></p>
+
+<form asp-action="ConfirmPayment" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="bookingId" value="@Model.Id" />
+    <button type="submit" class="btn btn-success">Xác nhận thanh toán</button>
+</form>
