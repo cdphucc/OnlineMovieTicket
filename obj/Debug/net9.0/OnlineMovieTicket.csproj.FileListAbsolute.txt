@@ -434,4 +434,3 @@ D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\n
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\8cxah9kkha-tqoay7vjj1.gz
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\OnlineMovieTicket.sourcelink.json
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\3hxb4eunim-rb4btt6b6d.gz
-D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

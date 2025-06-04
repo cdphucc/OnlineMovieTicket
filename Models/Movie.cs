@@ -9,7 +9,6 @@
         public string Description { get; set; }
         public DateTime ReleaseDate { get; set; }
         public string PosterUrl { get; set; }
-        public decimal Price { get; set; }
         public int Duration { get; set; } // Duration in minutes
         public string Language { get; set; }
         public string Rating { get; set; } // e.g., PG-13, R
