@@ -1,5 +1,6 @@
 ﻿using OnlineMovieTicket.Models;
 
+
 public class BookingDetail
 {
     public int Id { get; set; }

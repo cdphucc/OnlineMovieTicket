@@ -1,4 +1,6 @@
-﻿public class Payment
+﻿using OnlineMovieTicket.Models;
+
+public class Payment
 {
     public int Id { get; set; }
     public int BookingId { get; set; }
