@@ -38,21 +38,28 @@ namespace OnlineMovieTicket.Controllers
             _context = context;
         }
 
+
         // GET: ShowTimes
-        public async Task<IActionResult> Index(int? cinemaId)
+        public async Task<IActionResult> Index(int? cinemaId, DateTime? date)
         {
-            var showTimes = _context.ShowTimes
+            if (cinemaId == null) return RedirectToAction("Index", "Cinemas");
+            var selectedDate = date ?? DateTime.Today;
+            ViewBag.SelectedDate = selectedDate;
+            ViewBag.CinemaId = cinemaId;
+
+            ViewBag.AvailableDate = Enumerable.Range(0, 7)
+                .Select(i => DateTime.Today.AddDays(i)).ToList();
+
+            var showTimes = await _context.ShowTimes
+                .Where(s => s.Room.CinemaId == cinemaId.Value &&
+                            s.StartTime.Date == selectedDate.Date)
                 .Include(s => s.Movie)
                 .Include(s => s.Room)
-                .ThenInclude(r => r.Cinema)
-                .AsQueryable();
-            if (cinemaId.HasValue)
-            {
-                showTimes = showTimes.Where(s => s.Room.CinemaId == cinemaId.Value);
-                ViewBag.SelectedCinemaId = cinemaId.Value;
-            }
-            ViewBag.Cinemas = await _context.Cinemas.ToListAsync();
-            return View(await showTimes.OrderBy(s => s.StartTime).ToListAsync());
+                .ToListAsync();
+            var groupByMovie = showTimes
+                .GroupBy(s => s.Movie)
+                .ToList();
+            return View(groupByMovie);
         }
 
         // GET: ShowTimes/Details/5

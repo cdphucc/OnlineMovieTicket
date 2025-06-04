@@ -18,7 +18,106 @@ namespace OnlineMovieTicket.Controllers
         {
             _context = context;
         }
+        public IActionResult SelectCinema()
+        {
+            var cinemas = _context.Cinemas.ToList();
+            return View(cinemas);
+        }
 
+        public IActionResult SelectMovie(int cinemaId)
+        {
+            var movies = _context.ShowTimes
+                .Where(st => st.Room.CinemaId == cinemaId && st.StartTime >= DateTime.Now)
+                .Select(st => st.Movie)
+                .Distinct()
+                .ToList();
+            ViewBag.CinemaId = cinemaId;
+            return View(movies);
+        }
+        public IActionResult SelectShowTime(int cinemaId, int movieId, string? date)
+        {
+            DateTime day = DateTime.Today;
+            if (!string.IsNullOrEmpty(date)) DateTime.TryParse(date, out day);
+
+            var days = _context.ShowTimes
+                .Where(st => st.Room.CinemaId == cinemaId && st.MovieId == movieId && st.StartTime >= DateTime.Now)
+                .Select(st => st.StartTime.Date)
+                .Distinct()
+                .OrderBy(d => d)
+                .Take(7)
+                .ToList();
+
+            var showtimes = _context.ShowTimes
+                .Include(st => st.Room)
+                    .ThenInclude(r => r.Seats)
+                .Include(st => st.BookingDetails)
+                .Where(st => st.Room.CinemaId == cinemaId && st.MovieId == movieId && st.StartTime.Date == day)
+                .ToList();
+
+            ViewBag.CinemaId = cinemaId;
+            ViewBag.MovieId = movieId;
+            ViewBag.AvailableDates = days;
+            ViewBag.SelectedDate = day;
+
+            return View(showtimes);
+        }
+        public IActionResult SelectSeat(int showTimeId)
+        {
+            var showtime = _context.ShowTimes
+                .Include(st => st.Room)
+                    .ThenInclude(r => r.Seats)
+                .Include(st => st.BookingDetails)
+                .Include(st => st.Movie)
+                .FirstOrDefault(st => st.Id == showTimeId);
+
+            if (showtime == null) return NotFound();
+
+            // Lấy các ghế đã đặt cho suất chiếu này (Status = "Booked" hoặc tuỳ bạn quy định)
+            var bookedSeatIds = showtime.BookingDetails
+                .Where(bd => bd.Status == "Booked")
+                .Select(bd => bd.SeatId)
+                .ToHashSet();
+
+            ViewBag.ShowTime = showtime;
+            ViewBag.BookedSeatIds = bookedSeatIds;
+            return View(showtime.Room.Seats.ToList());
+        }
+        [HttpPost]
+        public IActionResult PaymentConfirmed(int showTimeId, List<int> selectedSeats)
+        {
+            // Lấy ra showtime để có giá vé
+            var showtime = _context.ShowTimes.FirstOrDefault(st => st.Id == showTimeId);
+            if (showtime == null) return NotFound();
+
+            var userId = User.Identity.Name ?? "guest"; // hoặc lấy theo User.Identity.GetUserId()
+            var booking = new Booking
+            {
+                UserId = userId,
+                BookingTime = DateTime.Now,
+                TotalAmount = 0, // sẽ tính sau
+                Status = "Confirmed",
+                CreatedAt = DateTime.Now,
+                PromotionId = 1, // xử lý thực tế nếu có
+                PaymentId = 1, // xử lý thực tế nếu có
+                BookingDetails = new List<BookingDetail>()
+            };
+
+            foreach (var seatId in selectedSeats)
+            {
+                booking.BookingDetails.Add(new BookingDetail
+                {
+                    ShowTimeId = showTimeId,
+                    SeatId = seatId,
+                    Price = showtime.Price, // LẤY GIÁ TỪ SHOWTIME
+                    Status = "Booked"
+                });
+            }
+            booking.TotalAmount = booking.BookingDetails.Sum(bd => bd.Price);
+
+            _context.Bookings.Add(booking);
+            _context.SaveChanges();
+            return RedirectToAction("Success");
+        }
         // GET: Bookings
         public async Task<IActionResult> Index()
         {

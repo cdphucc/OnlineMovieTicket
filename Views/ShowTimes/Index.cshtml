@@ -1,51 +1,63 @@
-﻿@{
-    var cinemas = ViewBag.Cinemas as List<OnlineMovieTicket.Models.Cinema>; // thay bằng namespace đúng
-    int? selectedCinemaId = ViewBag.SelectedCinemaId as int?;
+﻿@model List<IGrouping<OnlineMovieTicket.Models.Movie, OnlineMovieTicket.Models.ShowTime>>
+@using System.Globalization
+@{
+    var availableDates = ViewBag.AvailableDates as List<DateTime>;
+    DateTime selectedDate = ViewBag.SelectedDate;
+    int cinemaId = ViewBag.CinemaId;
 }
 
-<form method="get" asp-controller="ShowTimes" asp-action="Index" class="mb-3">
-    <label for="cinemaId">Chọn rạp:</label>
-    <select name="cinemaId" id="cinemaId" onchange="this.form.submit()" class="form-select" style="width:200px;display:inline-block;">
-        <option value="">-- Tất cả các rạp --</option>
-        @foreach (var cinema in cinemas)
-        {
-            if (selectedCinemaId == cinema.Id)
-            {
-                <option value="@cinema.Id" selected="selected">@cinema.Name</option>
-            }
-            else
-            {
-                <option value="@cinema.Id">@cinema.Name</option>
-            }
-        }
-}
-    </select>
-</form>
-
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Phim</th>
-            <th>Phòng</th>
-            <th>Rạp</th>
-            <th>Giờ chiếu</th>
-            <th>Giá vé</th>
-            <th>Định dạng</th>
-            <th>Trạng thái</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach(var showtime in Model)
+<!-- Thanh chọn ngày -->
+<div class="date-bar">
+    @foreach (var d in availableDates)
     {
-        <tr>
-            <td>@showtime.Movie.Title</td>
-            <td>@showtime.Room.Name</td>
-            <td>@showtime.Room.Cinema.Name</td>
-            <td>@showtime.StartTime.ToString("HH:mm dd/MM/yyyy")</td>
-            <td>@showtime.Price.ToString("N0") đ</td>
-            <td>@showtime.Format</td>
-            <td>@showtime.Status</td>
-        </tr>
+        <a href="@Url.Action("Index", new { cinemaId = cinemaId, date = d.ToString("yyyy-MM-dd") })"
+           class="date-item @(d.Date == selectedDate.Date ? "active" : "")">
+            <span>@d.ToString("dd/MM")</span>
+            <span>@(" - " + CultureInfo.GetCultureInfo("vi-VN").DateTimeFormat.GetAbbreviatedDayName(d.DayOfWeek).ToUpper())</span>
+        </a>
     }
-    </tbody>
-</table>
+</div>
+
+@foreach (var movieGroup in Model)
+{
+    var movie = movieGroup.Key;
+    <div class="movie-block">
+        <div class="movie-poster">
+            <img src="@movie.ImageUrl" alt="@movie.Title" />
+        </div>
+        <div class="movie-info">
+            <h3>@movie.Title</h3>
+            <div class="movie-meta">
+                <span>@movie.Genre</span>
+                <span>• @movie.Duration phút</span>
+            </div>
+            @foreach (var showByFormat in movieGroup.GroupBy(s => s.Format))
+            {
+                <div class="show-format">@showByFormat.Key</div>
+                <div class="showtimes-row">
+                    @foreach (var show in showByFormat)
+                    {
+                        var seatsLeft = show.TotalSeats - show.BookedSeats;
+                        if (seatsLeft == 0)
+                        {
+                            <a href="@Url.Action("Book", "Tickets", new { showTimeId = show.Id })"
+                               class="showtime-btn disabled"
+                               tabindex="-1" aria-disabled="true">
+                                <span>@show.StartTime.ToString("HH:mm")</span>
+                                <span class="seats">0 ghế trống</span>
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Book", "Tickets", new { showTimeId = show.Id })"
+                               class="showtime-btn">
+                                <span>@show.StartTime.ToString("HH:mm")</span>
+                                <span class="seats">@seatsLeft ghế trống</span>
+                            </a>
+                        }
+                    }
+                </div>
+            }
+        </div>
+    </div>
+}
