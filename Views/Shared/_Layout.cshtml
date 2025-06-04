@@ -44,9 +44,9 @@
 										<li class="dropdown-submenu">
 											<a>Hồ Chí Minh</a>
 											<ul class="dropdown-menu" role="menu">
-												<li><a href="/cinema/4">Hồ Chí Minh Cinema 1</a></li>
-												<li><a href="/cinema/5">Hồ Chí Minh Cinema 2</a></li>
-												<li><a href="/cinema/6">Hồ Chí Minh Cinema 3</a></li>
+												<li><a>Hồ Chí Minh Cinema 1</a></li>
+												<li><a>Hồ Chí Minh Cinema 2</a></li>
+												<li><a>Hồ Chí Minh Cinema 3</a></li>
                                            </ul>
 										</li>
 										<li class="dropdown-submenu">
@@ -82,13 +82,13 @@
                 <div class="header-navigation">
                     <ul>
                         <li id="BodyContent_ctl00_ctl06_rptMenu2_liNoChild_0">
-                            <a href="/ShowTimes/Index.cshtml">LỊCH CHIẾU</a>
+                            <a href="/ShowTimes/Index">LỊCH CHIẾU THEO RẠP</a>
                         </li>
 						<li id="BodyContent_ctl00_ctl06_rptMenu2_liNoChild_1">
-							<a href="/Movies/Index.cshtml">PHIM</a>
+							<a href="/Movies/Index">PHIM</a>
 						</li>
 						<li id="BodyContent_ctl00_ctl06_rptMenu2_liNoChild_2">
-							<a href="/Cinemas/Index.cshtml">RẠP</a>
+							<a href="/Cinemas/Index">RẠP</a>
 						</li>
 						<li id="BodyContent_ctl00_ctl06_rptMenu2_liNoChild_3">
 							<a href="/Contact/Index.cshtml">TIN MỚI</a>
@@ -100,6 +100,10 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div id="showtimes-popup" style="display:none; position:fixed; top:80px; right:40px; z-index:2000; background:#fff; border-radius:12px; box-shadow:0 4px 16px #0003; min-width:320px; max-width:90vw; max-height:70vh; overflow:auto; padding:20px;">
+        <button id="close-showtimes-popup" style="position:absolute;top:8px;right:12px;font-size:22px;background:none;border:none;cursor:pointer;">&times;</button>
+        <div id="showtimes-content"></div>
     </div>
     <div class="container">
         <main role="main" class="pb-3">

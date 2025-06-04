@@ -212,7 +212,6 @@ D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\n
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\v0zgfp0y55-87fc7y1x7t.gz
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\yfc7ypekbg-mlv21k5csn.gz
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\y9e1vxq3yd-61n19gt1b8.gz
-D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\3hxb4eunim-xtxxf3hu2r.gz
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\rjgf4gkbvr-bqjiyaj88i.gz
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\65b33q4zlt-c2jlpeoesf.gz
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\dqigc11vbk-erw9l3u2r3.gz
@@ -434,3 +433,5 @@ D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\n
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\in04juywmt-5zig82ig2x.gz
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\1gemnftuw6-tqoay7vjj1.gz
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\8cxah9kkha-tqoay7vjj1.gz
+D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\OnlineMovieTicket.sourcelink.json
+D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\3hxb4eunim-rb4btt6b6d.gz

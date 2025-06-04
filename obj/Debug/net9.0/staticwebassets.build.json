@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "dpF5xLlqZdryF0JlyOgeUvCgThVXmikFpVCiJdlwlME=",
+  "Hash": "EkA4v5CbnrrQlO9p8Be4f0IfUVLUUuR5amAH6Pz7xZE=",
   "Source": "OnlineMovieTicket",
   "BasePath": "_content/OnlineMovieTicket",
   "Mode": "Default",
@@ -1529,12 +1529,12 @@
       "OriginalItemSpec": "C:\\Users\\DUCPHUC\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\9.0.5\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
     },
     {
-      "Identity": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\obj\\Debug\\net9.0\\compressed\\3hxb4eunim-xtxxf3hu2r.gz",
+      "Identity": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\obj\\Debug\\net9.0\\compressed\\3hxb4eunim-rb4btt6b6d.gz",
       "SourceId": "OnlineMovieTicket",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/OnlineMovieTicket",
-      "RelativePath": "js/site#[.{fingerprint=xtxxf3hu2r}]?.js.gz",
+      "RelativePath": "js/site#[.{fingerprint=rb4btt6b6d}]?.js.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
@@ -1543,8 +1543,8 @@
       "RelatedAsset": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\wwwroot\\js\\site.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "fpxp8wntf7",
-      "Integrity": "465WqepNnI4ENLgQJFXrL2gtI20GCfeLK3JAtugOzpA=",
+      "Fingerprint": "r61zjmtg8b",
+      "Integrity": "w8smLSS5SxNf2f4sFGC+JX72lH/0RK6HZfiAS3Ns1RM=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\wwwroot\\js\\site.js"
@@ -4126,8 +4126,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "xtxxf3hu2r",
-      "Integrity": "hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo=",
+      "Fingerprint": "rb4btt6b6d",
+      "Integrity": "p9vUXD5jgukQ2t9Y6uSacruJ/kHTZXQG3CVv44TiVk4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\site.js"
@@ -14708,12 +14708,12 @@
     },
     {
       "Route": "js/site.js",
-      "AssetFile": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\obj\\Debug\\net9.0\\compressed\\3hxb4eunim-xtxxf3hu2r.gz",
+      "AssetFile": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\obj\\Debug\\net9.0\\compressed\\3hxb4eunim-rb4btt6b6d.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.005235602094"
+          "Quality": "0.001089324619"
         }
       ],
       "ResponseHeaders": [
@@ -14723,15 +14723,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "190"
+          "Value": "917"
         },
         {
           "Name": "ETag",
-          "Value": "\"465WqepNnI4ENLgQJFXrL2gtI20GCfeLK3JAtugOzpA=\""
+          "Value": "\"w8smLSS5SxNf2f4sFGC+JX72lH/0RK6HZfiAS3Ns1RM=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 31 May 2025 13:02:09 GMT"
+          "Value": "Wed, 04 Jun 2025 05:41:46 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -14751,13 +14751,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo=\""
+          "Value": "W/\"p9vUXD5jgukQ2t9Y6uSacruJ/kHTZXQG3CVv44TiVk4=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo="
+          "Value": "sha256-p9vUXD5jgukQ2t9Y6uSacruJ/kHTZXQG3CVv44TiVk4="
         }
       ]
     },
@@ -14772,7 +14772,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "231"
+          "Value": "2212"
         },
         {
           "Name": "Content-Type",
@@ -14780,11 +14780,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo=\""
+          "Value": "\"p9vUXD5jgukQ2t9Y6uSacruJ/kHTZXQG3CVv44TiVk4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 31 May 2025 13:02:09 GMT"
+          "Value": "Wed, 04 Jun 2025 05:41:46 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -14794,13 +14794,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo="
+          "Value": "sha256-p9vUXD5jgukQ2t9Y6uSacruJ/kHTZXQG3CVv44TiVk4="
         }
       ]
     },
     {
       "Route": "js/site.js.gz",
-      "AssetFile": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\obj\\Debug\\net9.0\\compressed\\3hxb4eunim-xtxxf3hu2r.gz",
+      "AssetFile": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\obj\\Debug\\net9.0\\compressed\\3hxb4eunim-rb4btt6b6d.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -14809,7 +14809,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "190"
+          "Value": "917"
         },
         {
           "Name": "Content-Type",
@@ -14817,11 +14817,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"465WqepNnI4ENLgQJFXrL2gtI20GCfeLK3JAtugOzpA=\""
+          "Value": "\"w8smLSS5SxNf2f4sFGC+JX72lH/0RK6HZfiAS3Ns1RM=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 31 May 2025 13:02:09 GMT"
+          "Value": "Wed, 04 Jun 2025 05:41:46 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -14839,18 +14839,18 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-465WqepNnI4ENLgQJFXrL2gtI20GCfeLK3JAtugOzpA="
+          "Value": "sha256-w8smLSS5SxNf2f4sFGC+JX72lH/0RK6HZfiAS3Ns1RM="
         }
       ]
     },
     {
-      "Route": "js/site.xtxxf3hu2r.js",
-      "AssetFile": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\obj\\Debug\\net9.0\\compressed\\3hxb4eunim-xtxxf3hu2r.gz",
+      "Route": "js/site.rb4btt6b6d.js",
+      "AssetFile": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\obj\\Debug\\net9.0\\compressed\\3hxb4eunim-rb4btt6b6d.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.005235602094"
+          "Quality": "0.001089324619"
         }
       ],
       "ResponseHeaders": [
@@ -14860,15 +14860,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "190"
+          "Value": "917"
         },
         {
           "Name": "ETag",
-          "Value": "\"465WqepNnI4ENLgQJFXrL2gtI20GCfeLK3JAtugOzpA=\""
+          "Value": "\"w8smLSS5SxNf2f4sFGC+JX72lH/0RK6HZfiAS3Ns1RM=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 31 May 2025 13:02:09 GMT"
+          "Value": "Wed, 04 Jun 2025 05:41:46 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -14888,13 +14888,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo=\""
+          "Value": "W/\"p9vUXD5jgukQ2t9Y6uSacruJ/kHTZXQG3CVv44TiVk4=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "xtxxf3hu2r"
+          "Value": "rb4btt6b6d"
         },
         {
           "Name": "label",
@@ -14902,12 +14902,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo="
+          "Value": "sha256-p9vUXD5jgukQ2t9Y6uSacruJ/kHTZXQG3CVv44TiVk4="
         }
       ]
     },
     {
-      "Route": "js/site.xtxxf3hu2r.js",
+      "Route": "js/site.rb4btt6b6d.js",
       "AssetFile": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\wwwroot\\js\\site.js",
       "Selectors": [],
       "ResponseHeaders": [
@@ -14917,7 +14917,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "231"
+          "Value": "2212"
         },
         {
           "Name": "Content-Type",
@@ -14925,11 +14925,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo=\""
+          "Value": "\"p9vUXD5jgukQ2t9Y6uSacruJ/kHTZXQG3CVv44TiVk4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 31 May 2025 13:02:09 GMT"
+          "Value": "Wed, 04 Jun 2025 05:41:46 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -14939,7 +14939,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "xtxxf3hu2r"
+          "Value": "rb4btt6b6d"
         },
         {
           "Name": "label",
@@ -14947,13 +14947,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo="
+          "Value": "sha256-p9vUXD5jgukQ2t9Y6uSacruJ/kHTZXQG3CVv44TiVk4="
         }
       ]
     },
     {
-      "Route": "js/site.xtxxf3hu2r.js.gz",
-      "AssetFile": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\obj\\Debug\\net9.0\\compressed\\3hxb4eunim-xtxxf3hu2r.gz",
+      "Route": "js/site.rb4btt6b6d.js.gz",
+      "AssetFile": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\obj\\Debug\\net9.0\\compressed\\3hxb4eunim-rb4btt6b6d.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -14962,7 +14962,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "190"
+          "Value": "917"
         },
         {
           "Name": "Content-Type",
@@ -14970,11 +14970,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"465WqepNnI4ENLgQJFXrL2gtI20GCfeLK3JAtugOzpA=\""
+          "Value": "\"w8smLSS5SxNf2f4sFGC+JX72lH/0RK6HZfiAS3Ns1RM=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 31 May 2025 13:02:09 GMT"
+          "Value": "Wed, 04 Jun 2025 05:41:46 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -14992,7 +14992,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "xtxxf3hu2r"
+          "Value": "rb4btt6b6d"
         },
         {
           "Name": "label",
@@ -15000,7 +15000,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-465WqepNnI4ENLgQJFXrL2gtI20GCfeLK3JAtugOzpA="
+          "Value": "sha256-w8smLSS5SxNf2f4sFGC+JX72lH/0RK6HZfiAS3Ns1RM="
         }
       ]
     },

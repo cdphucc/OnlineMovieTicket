@@ -13,17 +13,46 @@ namespace OnlineMovieTicket.Controllers
     public class ShowTimesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
+        [HttpGet]
+        public async Task<IActionResult> GetShowTimesByCinema(int cinemaId)
+        {
+            var showTimes = await _context.ShowTimes
+                .Include(s => s.Movie)
+                .Include(s => s.Room)
+                .Where(s => s.Room.CinemaId == cinemaId)
+                .OrderBy(s => s.StartTime)
+                .ToListAsync();
+            var result = showTimes.Select(s => new
+            {
+               MovieTitle = s.Movie.Title,
+                RoomName = s.Room.Name,
+                StartTime = s.StartTime.ToString("yyyy-MM-dd HH:mm"),
+                Price = s.Price,
+                Status = s.Status,
+                Format = s.Format
+            });
+            return Json(result);
+        }
         public ShowTimesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         // GET: ShowTimes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? cinemaId)
         {
-            var applicationDbContext = _context.ShowTimes.Include(s => s.Movie).Include(s => s.Room);
-            return View(await applicationDbContext.ToListAsync());
+            var showTimes = _context.ShowTimes
+                .Include(s => s.Movie)
+                .Include(s => s.Room)
+                .ThenInclude(r => r.Cinema)
+                .AsQueryable();
+            if (cinemaId.HasValue)
+            {
+                showTimes = showTimes.Where(s => s.Room.CinemaId == cinemaId.Value);
+                ViewBag.SelectedCinemaId = cinemaId.Value;
+            }
+            ViewBag.Cinemas = await _context.Cinemas.ToListAsync();
+            return View(await showTimes.OrderBy(s => s.StartTime).ToListAsync());
         }
 
         // GET: ShowTimes/Details/5
