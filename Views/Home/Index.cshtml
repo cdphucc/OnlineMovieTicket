@@ -1,16 +1,62 @@
-﻿@using OnlineMovieTicket.Models
+﻿@{
+    ViewData["Title"] = "Trang Chủ";
+    Layout = "_Layout";
+}
+@using OnlineMovieTicket.Models
 @{
+	var comingSoon = ViewData["ComingSoon"] as List<Movie>;
     var nowShowing = ViewData["NowShowing"] as List<Movie>;
 }
-<h2>Phim Đang Chiếu</h2>
-<div>
-    @foreach (var movie in nowShowing)
+<h2>Phim Sắp Chiếu</h2>
+<div class="row">
+    @if (comingSoon != null && comingSoon.Any())
     {
-        <div class="movie-card">
-            <img src="@movie.PosterUrl" alt="@movie.Title" style="width:150px" />
-            <h4>@movie.Title</h4>
-            <p>@movie.Description</p>
-            <button class="btn btn-primary" onclick="openShowtimeModal(@movie.Id, '@movie.Title.Replace("'", "\\'")')">Đặt vé</button>
+        foreach (var movie in comingSoon)
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card movie-card h-100">
+                    <img src="@movie.PosterUrl" class="card-img-top" alt="@movie.Title" style="height: 100%; object-fit: cover;" />
+                    <div class="card-body">
+                        <h5 class="card-title">@movie.Title</h5>
+                        <p class="card-text">@movie.Description</p>
+                        <!-- Không có nút đặt vé -->
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12">
+            <p>Không có phim sắp chiếu.</p>
+        </div>
+    }
+</div>
+<h2>Phim Đang Chiếu</h2>
+<div class="row">
+    @if (nowShowing != null && nowShowing.Any())
+    {
+        foreach (var movie in nowShowing)
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card movie-card h-100">
+                    <img src="@movie.PosterUrl" class="card-img-top" alt="@movie.Title" style="height: 100%; object-fit: cover;" />
+                    <div class="card-body">
+                        <h5 class="card-title">@movie.Title</h5>
+                        <p class="card-text">@movie.Description</p>
+                        <button class="btn btn-primary"
+                                onclick="openShowtimeModal(@movie.Id, '@movie.Title.Replace("'", "\\'")')">
+                            Đặt vé
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12">
+            <p>Không có phim đang chiếu.</p>
         </div>
     }
 </div>
@@ -20,7 +66,9 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="showtimeModalLabel">Chọn lịch chiếu cho <span id="modalMovieTitle"></span></h5>
+                <h5 class="modal-title" id="showtimeModalLabel">
+                    Chọn lịch chiếu cho <span id="modalMovieTitle"></span>
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -33,4 +81,52 @@
         </div>
     </div>
 </div>
-<script src="~/js/site.js" asp-append-version="true"></script>
+
+<!-- Bootstrap JS và script xử lý đặt ở cuối file -->
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let selectedShowtimeId = null;
+            const showtimeModal = new bootstrap.Modal(document.getElementById('showtimeModal'));
+
+            // Gán hàm vào window để gọi từ HTML
+            window.openShowtimeModal = function (movieId, movieTitle) {
+                document.getElementById('modalMovieTitle').textContent = movieTitle;
+                document.getElementById('showtimeList').innerHTML = 'Đang tải...';
+                document.getElementById('confirmShowtimeBtn').disabled = true;
+                selectedShowtimeId = null;
+                showtimeModal.show();
+
+                fetch('/ShowTimes/GetByMovie/' + movieId)
+                    .then(response => response.json())
+                    .then(data => {
+                        let html = '';
+                        if (data.length === 0) {
+                            html = '<p>Chưa có lịch chiếu cho phim này.</p>';
+                        } else {
+                            data.forEach(st => {
+                                html += `<div>
+                                    <input type="radio" name="showtime" value="${st.id}" id="showtime${st.id}">
+                                    <label for="showtime${st.id}">${st.startTime} - Phòng: ${st.roomName}</label>
+                                </div>`;
+                            });
+                        }
+                        document.getElementById('showtimeList').innerHTML = html;
+                        document.querySelectorAll('input[name="showtime"]').forEach(el => {
+                            el.addEventListener('change', function () {
+                                selectedShowtimeId = this.value;
+                                document.getElementById('confirmShowtimeBtn').disabled = false;
+                            });
+                        });
+                    });
+            }
+
+            document.getElementById('confirmShowtimeBtn').addEventListener('click', function () {
+                if (selectedShowtimeId) {
+                    window.location.href = '/Booking/SelectSeat?showTimeId=' + selectedShowtimeId;
+                }
+            });
+        });
+    </script>
+}

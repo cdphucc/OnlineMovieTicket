@@ -23,9 +23,11 @@ namespace OnlineMovieTicket.Controllers
         public IActionResult GetByMovie(int movieId)
         {
             var showtimes = _context.ShowTimes
-                .Where(st => st.MovieId == movieId && st.Status == "Active")
+                .Include(st => st.Room)
                 .Select(st => new {
                     id = st.Id,
+                    movieId = st.MovieId,
+                    status = st.Status,
                     startTime = st.StartTime.ToString("HH:mm dd/MM/yyyy"),
                     roomName = st.Room.Name
                 })
