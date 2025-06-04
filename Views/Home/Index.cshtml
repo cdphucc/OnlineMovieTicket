@@ -1,39 +1,36 @@
-﻿@model IEnumerable<OnlineMovieTicket.Models.Movie>
-
+﻿@using OnlineMovieTicket.Models
 @{
-    ViewData["Title"] = "Trang chủ";
-    var comingSoon = ViewBag.ComingSoon as List<OnlineMovieTicket.Models.Movie>;
-    var nowShowing = ViewBag.NowShowing as List<OnlineMovieTicket.Models.Movie>;
+    var nowShowing = ViewData["NowShowing"] as List<Movie>;
 }
+<h2>Phim Đang Chiếu</h2>
+<div>
+    @foreach (var movie in nowShowing)
+    {
+        <div class="movie-card">
+            <img src="@movie.PosterUrl" alt="@movie.Title" style="width:150px" />
+            <h4>@movie.Title</h4>
+            <p>@movie.Description</p>
+            <button class="btn btn-primary" onclick="openShowtimeModal(@movie.Id, '@movie.Title.Replace("'", "\\'")')">Đặt vé</button>
+        </div>
+    }
+</div>
 
-<div class="movie-section">
-    <h2>Phim sắp chiếu</h2>
-    <div class="row">
-        @foreach (var movie in comingSoon)
-        {
-            <div class="col-md-3">
-                <div class="movie-card">
-                    <img src="@movie.PosterUrl" alt="@movie.Title" class="movie-poster" />
-                    <h4>@movie.Title</h4>
-                    <p>Thể loại: @movie.Genre</p>
-                    <p>Ngày chiếu: @movie.ReleaseDate.ToString("dd/MM/yyyy")</p>
-                </div>
+<!-- Modal chọn lịch chiếu -->
+<div class="modal fade" id="showtimeModal" tabindex="-1" aria-labelledby="showtimeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="showtimeModalLabel">Chọn lịch chiếu cho <span id="modalMovieTitle"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        }
-    </div>
-
-    <h2>Phim đang chiếu</h2>
-    <div class="row">
-        @foreach (var movie in nowShowing)
-        {
-            <div class="col-md-3">
-                <div class="movie-card">
-                    <img src="@movie.PosterUrl" alt="@movie.Title" class="movie-poster" />
-                    <h4>@movie.Title</h4>
-                    <p>Thể loại: @movie.Genre</p>
-                    <p>Thời lượng: @movie.Duration phút</p>
-                </div>
+            <div class="modal-body">
+                <div id="showtimeList">Loading...</div>
             </div>
-        }
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" id="confirmShowtimeBtn" disabled>Xác nhận</button>
+            </div>
+        </div>
     </div>
 </div>
+<script src="~/js/site.js" asp-append-version="true"></script>
