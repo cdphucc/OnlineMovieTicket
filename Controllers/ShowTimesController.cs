@@ -22,13 +22,29 @@ namespace OnlineMovieTicket.Controllers
         [HttpGet]
         public IActionResult GetByMovie(int movieId)
         {
-            Console.WriteLine("movieId nhận được: " + movieId); // Log kiểm tra
+            var now = DateTime.Now;
+
+            // 1. Tìm các suất chiếu đã qua nhưng vẫn "Available"
+            var expiredShowtimes = _context.ShowTimes
+                .Where(st => st.MovieId == movieId && st.Status == "Available" && st.StartTime < now)
+                .ToList();
+
+            // 2. Đổi status thành "Expired"
+            foreach (var st in expiredShowtimes)
+            {
+                st.Status = "Expired";
+            }
+            if (expiredShowtimes.Count > 0)
+                _context.SaveChanges();
+
+            // 3. Lấy các suất chiếu còn khả dụng (chỉ trả về future showtimes)
             var showtimes = _context.ShowTimes
-                .Include(st => st.Room)
-                .Where(st => st.MovieId == movieId && st.Status == "Active" )
-                .Select(st => new {
+                .Where(st => st.MovieId == movieId && st.Status == "Available" && st.StartTime > now)
+                .OrderBy(st => st.StartTime)
+                .Select(st => new
+                {
                     id = st.Id,
-                    startTime = st.StartTime.ToString("HH:mm dd/MM/yyyy"),
+                    startTime = st.StartTime.ToString("dd/MM/yyyy HH:mm"),
                     roomName = st.Room.Name
                 })
                 .ToList();
