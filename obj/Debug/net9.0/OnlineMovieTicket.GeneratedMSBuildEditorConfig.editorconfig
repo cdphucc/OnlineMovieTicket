@@ -188,148 +188,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Bookings/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ3NcQ3JlYXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Bookings/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ3NcRGVsZXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Bookings/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ3NcRWRpdC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Bookings/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ3NcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Bookings/ProcessPayment.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ3NcUHJvY2Vzc1BheW1lbnQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Bookings/SelectCinema.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ3NcU2VsZWN0Q2luZW1hLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Bookings/SelectMovie.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ3NcU2VsZWN0TW92aWUuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Bookings/SelectSeat.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ3NcU2VsZWN0U2VhdC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Bookings/SelectShowTime.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ3NcU2VsZWN0U2hvd1RpbWUuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Cinemas/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2luZW1hc1xDcmVhdGUuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Cinemas/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2luZW1hc1xEZWxldGUuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Cinemas/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2luZW1hc1xEZXRhaWxzLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Cinemas/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2luZW1hc1xFZGl0LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Cinemas/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2luZW1hc1xJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Movies/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVzXENyZWF0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Movies/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVzXERlbGV0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Movies/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVzXERldGFpbHMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Movies/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVzXEVkaXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Movies/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVzXEluZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Payments/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudHNcQ3JlYXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Payments/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudHNcRGVsZXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Payments/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudHNcRGV0YWlscy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Payments/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudHNcRWRpdC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Payments/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudHNcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Rooms/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbXNcQ3JlYXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Rooms/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbXNcRGVsZXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Rooms/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbXNcRGV0YWlscy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Rooms/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbXNcRWRpdC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Rooms/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbXNcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Seats/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VhdHNcQ3JlYXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Seats/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VhdHNcRGVsZXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Seats/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VhdHNcRGV0YWlscy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Seats/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VhdHNcRWRpdC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Seats/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VhdHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Shared/Error.cshtml]
@@ -342,26 +206,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/ShowTimes/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvd1RpbWVzXENyZWF0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/ShowTimes/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvd1RpbWVzXERlbGV0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/ShowTimes/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvd1RpbWVzXERldGFpbHMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/ShowTimes/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvd1RpbWVzXEVkaXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/ShowTimes/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvd1RpbWVzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/_ViewImports.cshtml]
