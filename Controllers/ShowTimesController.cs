@@ -22,16 +22,17 @@ namespace OnlineMovieTicket.Controllers
         [HttpGet]
         public IActionResult GetByMovie(int movieId)
         {
+            Console.WriteLine("movieId nhận được: " + movieId); // Log kiểm tra
             var showtimes = _context.ShowTimes
                 .Include(st => st.Room)
+                .Where(st => st.MovieId == movieId && st.Status == "Active" )
                 .Select(st => new {
                     id = st.Id,
-                    movieId = st.MovieId,
-                    status = st.Status,
                     startTime = st.StartTime.ToString("HH:mm dd/MM/yyyy"),
                     roomName = st.Room.Name
                 })
                 .ToList();
+
             return Json(showtimes);
         }
 

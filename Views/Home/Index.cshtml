@@ -98,7 +98,7 @@
                 selectedShowtimeId = null;
                 showtimeModal.show();
 
-                fetch('/ShowTimes/GetByMovie/' + movieId)
+                fetch('/ShowTimes/GetByMovie?movieId=' + movieId)
                     .then(response => response.json())
                     .then(data => {
                         let html = '';
@@ -124,7 +124,7 @@
 
             document.getElementById('confirmShowtimeBtn').addEventListener('click', function () {
                 if (selectedShowtimeId) {
-                    window.location.href = '/Booking/SelectSeat?showTimeId=' + selectedShowtimeId;
+                    window.location.href = '/Bookings/SelectSeat?showTimeId=' + selectedShowtimeId;
                 }
             });
         });
