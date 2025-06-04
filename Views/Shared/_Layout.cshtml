@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] Online Movie Ticket</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/OnlineMovieTicket.styles.css" asp-append-version="true" />
+</head>
+<body class="vnuis">
+    <div>
+        <div class="desktop-panel" id="desktop-panel">
+            <div class="pre-header">
+                 <div class="pre-header-button">
+                      <partial name="_LoginPartial"/>
+                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <a class="site-logo" href="/"><img alt style="height: 75px;" src="/img1.png"/></a>
+                <div class="top-cart-block">
+                    <div class="top-cart-info">
+                        <div class="header-navigation-menu">
+                            <ul>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle no-padding" data-toggle="dropdown" data-target="#" href="javascript:;" aria-expanded="false">Hà Nội Cinema 1
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-submenu">
+                                            <a>Hà Nội</a>
+                                            <ul class="dropdown-menu" role="menu">
+												<li><a href="/cinema/1">Hà Nội Cinema 1</a></li>
+												<li><a href="/cinema/2">Hà Nội Cinema 2</a></li>
+												<li><a href="/cinema/3">Hà Nội Cinema 3</a></li>
+                                            </ul>
+                                        </li>
+										<li class="dropdown-submenu">
+											<a>Hồ Chí Minh</a>
+											<ul class="dropdown-menu" role="menu">
+												<li><a href="/cinema/4">Hồ Chí Minh Cinema 1</a></li>
+												<li><a href="/cinema/5">Hồ Chí Minh Cinema 2</a></li>
+												<li><a href="/cinema/6">Hồ Chí Minh Cinema 3</a></li>
+                                           </ul>
+										</li>
+										<li class="dropdown-submenu">
+                                            <a>Vĩnh Phúc</a>
+											<ul class="dropdown-menu" role="menu">
+												<li><a href="/cinema/7">Vĩnh Phúc Cinema 1</a></li>
+												<li><a href="/cinema/8">Vĩnh Phúc Cinema 2</a></li>
+												<li><a href="/cinema/9">Vĩnh Phúc Cinema 3</a></li>
+                                            </ul>
+                                        </li>
+										<li class="dropdown-submenu">
+											<a>Hải Phòng</a>
+											<ul class="dropdown-menu" role="menu">
+												<li><a href="/cinema/10">Hải Phòng Cinema 1</a></li>
+												<li><a href="/cinema/11">Hải Phòng Cinema 2</a></li>
+												<li><a href="/cinema/12">Hải Phòng Cinema 3</a></li>
+                                            </ul>
+										</li>
+										<li class="dropdown-submenu">
+											<a>Hà Tĩnh</a>
+											<ul class="dropdown-menu" role="menu">
+												<li><a href="/cinema/13">Hà Tĩnh Cinema 1</a></li>
+												<li><a href="/cinema/14">Hà Tĩnh Cinema 2</a></li>
+												<li><a href="/cinema/15">Hà Tĩnh Cinema 3</a></li>
+											</ul>
+										</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-navigation">
+                    <ul>
+                        <li id="BodyContent_ctl00_ctl06_rptMenu2_liNoChild_0">
+                            <a href="/ShowTimes/Index.cshtml">LỊCH CHIẾU</a>
+                        </li>
+						<li id="BodyContent_ctl00_ctl06_rptMenu2_liNoChild_1">
+							<a href="/Movies/Index.cshtml">PHIM</a>
+						</li>
+						<li id="BodyContent_ctl00_ctl06_rptMenu2_liNoChild_2">
+							<a href="/Cinemas/Index.cshtml">RẠP</a>
+						</li>
+						<li id="BodyContent_ctl00_ctl06_rptMenu2_liNoChild_3">
+							<a href="/Contact/Index.cshtml">TIN MỚI</a>
+						</li>
+						<li id="BodyContent_ctl00_ctl06_rptMenu2_liNoChild_4">
+							<a href="/About/Index.cshtml">GIỚI THIỆU</a>
+						</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    @* <footer class="border-top footer text-muted"> *@
+    @*     <div class="container"> *@
+    @*         &copy; 2025 - OnlineMovieTicket *@
+    @*     </div> *@
+    @* </footer> *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
