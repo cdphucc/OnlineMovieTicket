@@ -19,11 +19,25 @@ namespace OnlineMovieTicket.Controllers
             _context = context;
         }
 
-        // GET: Movies
+        //Trang chi tiết phim
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Movies.ToListAsync());
+            var comingSoon = await _context.Movies
+                .Where(m => m.Status == "Coming Soon")
+                .ToListAsync();
+
+            var nowShowing = await _context.Movies
+                .Where(m => m.Status == "Now Showing")
+                .ToListAsync();
+
+            ViewBag.ComingSoon = comingSoon;
+            ViewBag.NowShowing = nowShowing;
+
+            return View();
         }
+
+
+        // GET: Movies
 
         // GET: Movies/Details/5
         public async Task<IActionResult> Details(int? id)

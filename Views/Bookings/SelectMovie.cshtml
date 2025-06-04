@@ -1,10 +1,16 @@
-﻿@model IEnumerable<OnlineMovieTicket.Models.Cinema>
-<h2>Chọn rạp</h2>
+﻿@model IEnumerable<OnlineMovieTicket.Models.Movie>
+@{
+    int cinemaId = ViewBag.CinemaId;
+}
+<h2>Chọn phim tại rạp</h2>
 <ul>
-    @foreach (var cinema in Model)
+    @foreach (var movie in Model)
     {
         <li>
-            <a href="@Url.Action("SelectMovie", "Booking", new { cinemaId = cinema.Id })">@cinema.Name</a>
+            <a href="@Url.Action("SelectShowTime", "Bookings", new { cinemaId = cinemaId, movieId = movie.Id })">
+                <img src="@movie.PosterUrl" alt="@movie.Title" width="80" />
+                <span>@movie.Title</span>
+            </a>
         </li>
     }
 </ul>

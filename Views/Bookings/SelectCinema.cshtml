@@ -4,7 +4,7 @@
     @foreach (var cinema in Model)
     {
         <li>
-            <a href="@Url.Action("SelectMovie", "Booking", new { cinemaId = cinema.Id })">@cinema.Name</a>
+            <a href="@Url.Action("SelectMovie", "Bookings", new { cinemaId = cinema.Id })">@cinema.Name</a>
         </li>
     }
 </ul>

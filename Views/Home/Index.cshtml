@@ -1,95 +1,39 @@
-﻿@{
-    Layout = "_Layout";
-    var comingSoon = ViewBag.ComingSoon as List<OnlineMovieTicket.Models.Movie> ?? new List<OnlineMovieTicket.Models.Movie>();
-    var nowShowing = ViewBag.NowShowing as List<OnlineMovieTicket.Models.Movie> ?? new List<OnlineMovieTicket.Models.Movie>();
+﻿@model IEnumerable<OnlineMovieTicket.Models.Movie>
+
+@{
+    ViewData["Title"] = "Trang chủ";
+    var comingSoon = ViewBag.ComingSoon as List<OnlineMovieTicket.Models.Movie>;
+    var nowShowing = ViewBag.NowShowing as List<OnlineMovieTicket.Models.Movie>;
 }
 
-<div class="banner">
-    <img src="/banner.png" alt="Banner" style="width:100%;height:100%;object-fit:cover;" />
-</div>
-<div class="mt-4 movie-section">
-    <ul class="nav nav-tabs custom-tabs justify-content-center" id="movieTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="comingsoon-tab" data-bs-toggle="tab" data-bs-target="#comingsoon" type="button" role="tab">PHIM SẮP CHIẾU</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="nowshowing-tab" data-bs-toggle="tab" data-bs-target="#nowshowing" type="button" role="tab">PHIM ĐANG CHIẾU</button>
-        </li>
-    </ul>
-    <div class="tab-content" id="movieTabContent">
-        <div class="tab-pane fade show active" id="comingsoon" role="tabpanel">
-            <div class="row g-4 mt-3">
-                @foreach (var movie in comingSoon)
-                {
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
-                        <div class="movie-card flex-fill d-flex flex-column">
-                            <div class="poster-wrapper position-relative">
-                                <img src="@movie.PosterUrl" alt="@movie.Title" class="movie-poster" />
-                                @* Ví dụ badge độ tuổi/phổ biến, tùy dữ liệu *@
-                                @if (!string.IsNullOrEmpty(movie.Rating))
-                                {
-                                    <span class="badge age-badge">@movie.Rating</span>
-                                }
-                                {
-                                    <span class="badge hot-badge">HOT</span>
-                                }
-                            </div>
-                            <div class="movie-info px-2 py-2 flex-grow-1 d-flex flex-column">
-                                <div class="movie-title mb-1" title="@movie.Title">@movie.Title</div>
-                                <div class="movie-meta text-muted small mb-1">
-                                    Thể loại: @movie.Genre<br />
-                                    Thời lượng: @movie.Duration phút
-                                </div>
-                                <div class="mt-auto text-center">
-                                    @if (User.Identity.IsAuthenticated)
-                                    {
-                                        <a href="/Booking/SelectShowtime/@movie.Id" class="btn btn-buy">MUA VÉ</a>
-                                    }
-                                    else
-                                    {
-                                        <a href="/Account/Login" class="btn btn-login">MUA VÉ</a>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
+<div class="movie-section">
+    <h2>Phim sắp chiếu</h2>
+    <div class="row">
+        @foreach (var movie in comingSoon)
+        {
+            <div class="col-md-3">
+                <div class="movie-card">
+                    <img src="@movie.PosterUrl" alt="@movie.Title" class="movie-poster" />
+                    <h4>@movie.Title</h4>
+                    <p>Thể loại: @movie.Genre</p>
+                    <p>Ngày chiếu: @movie.ReleaseDate.ToString("dd/MM/yyyy")</p>
+                </div>
             </div>
-        </div>
-        <div class="tab-pane fade" id="nowshowing" role="tabpanel">
-            <div class="row g-4 mt-3">
-                @foreach (var movie in nowShowing)
-                {
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
-                        <div class="movie-card flex-fill d-flex flex-column">
-                            <div class="poster-wrapper position-relative">
-                                <img src="@movie.PosterUrl" alt="@movie.Title" class="movie-poster" />
-                                @if (!string.IsNullOrEmpty(movie.Rating))
-                                {
-                                    <span class="badge age-badge">@movie.Rating</span>
-                                }
-                            </div>
-                            <div class="movie-info px-2 py-2 flex-grow-1 d-flex flex-column">
-                                <div class="movie-title mb-1" title="@movie.Title">@movie.Title</div>
-                                <div class="movie-meta text-muted small mb-1">
-                                    Thể loại: @movie.Genre<br />
-                                    Thời lượng: @movie.Duration phút
-                                </div>
-                                <div class="mt-auto text-center">
-                                    @if (User.Identity.IsAuthenticated)
-                                    {
-                                        <a href="/Booking/SelectShowtime/@movie.Id" class="btn btn-buy">MUA VÉ</a>
-                                    }
-                                    else
-                                    {
-                                        <a href="/Account/Login" class="btn btn-login">MUA VÉ</a>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
+        }
+    </div>
+
+    <h2>Phim đang chiếu</h2>
+    <div class="row">
+        @foreach (var movie in nowShowing)
+        {
+            <div class="col-md-3">
+                <div class="movie-card">
+                    <img src="@movie.PosterUrl" alt="@movie.Title" class="movie-poster" />
+                    <h4>@movie.Title</h4>
+                    <p>Thể loại: @movie.Genre</p>
+                    <p>Thời lượng: @movie.Duration phút</p>
+                </div>
             </div>
-        </div>
+        }
     </div>
 </div>

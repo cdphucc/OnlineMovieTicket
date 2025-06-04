@@ -1,20 +1,24 @@
-﻿@model List<OnlineMovieTicket.Models.Seat>
+﻿@model IEnumerable<OnlineMovieTicket.Models.Seat>
+
 @{
-    var showtime = ViewBag.ShowTime as OnlineMovieTicket.Models.ShowTime;
+    ViewData["Title"] = "Chọn ghế";
+    var showTime = ViewBag.ShowTime as OnlineMovieTicket.Models.ShowTime;
     var bookedSeatIds = ViewBag.BookedSeatIds as HashSet<int>;
 }
-<h2>Chọn ghế cho phim @showtime.Movie.Title - @showtime.StartTime.ToString("dd/MM/yyyy HH:mm")</h2>
-<form asp-action="ConfirmBooking" method="post">
-    <input type="hidden" name="showTimeId" value="@showtime.Id" />
-    <div class="seat-map">
+
+<h2>Chọn ghế</h2>
+<p>Suất chiếu: @showTime.StartTime.ToString("dd/MM/yyyy HH:mm") - Phòng: @showTime.Room.Name</p>
+
+<form method="post" action="/Bookings/Payment">
+    <input type="hidden" name="showTimeId" value="@showTime.Id" />
+    <div class="seat-grid">
         @foreach (var seat in Model)
         {
-            bool isBooked = bookedSeatIds.Contains(seat.Id);
-            <label class="seat-label" style="margin: 8px; display:inline-block;">
-                <input type="checkbox" name="selectedSeats" value="@seat.Id" @(isBooked ? "disabled" : "") />
-                @seat.SeatNumber @(isBooked ? "(Đã đặt)" : "")
-            </label>
+            <div class="seat">
+                <input type="checkbox" name="selectedSeats" value="@seat.Id" @(bookedSeatIds.Contains(seat.Id) ? "disabled" : "") />
+                <label>@seat.SeatNumber</label>
+            </div>
         }
     </div>
-    <button type="submit">Tiếp tục</button>
+    <button type="submit" class="btn btn-success">Thanh toán</button>
 </form>

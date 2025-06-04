@@ -1,0 +1,26 @@
+﻿@model OnlineMovieTicket.Models.Booking
+
+@{
+    ViewData["Title"] = "Thanh toán";
+}
+
+<h2>Thanh toán</h2>
+<div>
+    <h4>Thông tin đặt vé</h4>
+    <p>Người dùng: @Model.UserId</p>
+    <p>Tổng tiền: @Model.TotalAmount.ToString("C")</p>
+    <p>Ngày đặt: @Model.BookingTime.ToString("dd/MM/yyyy HH:mm")</p>
+
+    <h4>Danh sách ghế</h4>
+    <ul>
+        @foreach (var detail in Model.BookingDetails)
+        {
+            <li>Ghế: @detail.SeatId - Giá: @detail.Price.ToString("C")</li>
+        }
+    </ul>
+
+    <form method="post" action="/Payment/Confirm">
+        <input type="hidden" name="bookingId" value="@Model.Id" />
+        <button type="submit" class="btn btn-success">Xác nhận thanh toán</button>
+    </form>
+</div>

@@ -19,6 +19,28 @@ namespace OnlineMovieTicket.Controllers
             _context = context;
         }
 
+        [HttpPost]
+        public IActionResult Confirm(int bookingId)
+        {
+            var booking = _context.Bookings.FirstOrDefault(b => b.Id == bookingId);
+            if (booking == null) return NotFound();
+
+            // Xử lý logic thanh toán (tích hợp cổng thanh toán như Stripe, PayPal)
+            booking.Status = "Confirmed";
+            booking.PaymentId = 1; // Cập nhật ID thanh toán thực tế
+            _context.SaveChanges();
+
+            return RedirectToAction("Success");
+        }
+
+        public IActionResult Success()
+        {
+            ViewData["Message"] = "Thanh toán thành công! Vé của bạn sẽ được gửi qua email.";
+            return View();
+        }
+
+
+
         // GET: Payments
         public async Task<IActionResult> Index()
         {

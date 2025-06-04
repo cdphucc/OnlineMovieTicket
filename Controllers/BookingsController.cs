@@ -34,71 +34,66 @@ namespace OnlineMovieTicket.Controllers
             ViewBag.CinemaId = cinemaId;
             return View(movies);
         }
-        public IActionResult SelectShowTime(int cinemaId, int movieId, string? date)
+        public IActionResult SelectShowTime(int movieId)
         {
-            DateTime day = DateTime.Today;
-            if (!string.IsNullOrEmpty(date)) DateTime.TryParse(date, out day);
-
-            var days = _context.ShowTimes
-                .Where(st => st.Room.CinemaId == cinemaId && st.MovieId == movieId && st.StartTime >= DateTime.Now)
-                .Select(st => st.StartTime.Date)
-                .Distinct()
-                .OrderBy(d => d)
-                .Take(7)
-                .ToList();
-
             var showtimes = _context.ShowTimes
                 .Include(st => st.Room)
                     .ThenInclude(r => r.Seats)
-                .Include(st => st.BookingDetails)
-                .Where(st => st.Room.CinemaId == cinemaId && st.MovieId == movieId && st.StartTime.Date == day)
+                .Where(st => st.MovieId == movieId && st.StartTime >= DateTime.Now)
                 .ToList();
 
-            ViewBag.CinemaId = cinemaId;
-            ViewBag.MovieId = movieId;
-            ViewBag.AvailableDates = days;
-            ViewBag.SelectedDate = day;
+            if (!showtimes.Any())
+            {
+                ViewBag.Message = "Hiện tại không có suất chiếu cho phim này.";
+                return View("NoShowTime");
+            }
 
+            ViewBag.MovieId = movieId;
             return View(showtimes);
         }
         public IActionResult SelectSeat(int showTimeId)
         {
             var showtime = _context.ShowTimes
                 .Include(st => st.Room)
-                    .ThenInclude(r => r.Seats)
+                .ThenInclude(r => r.Seats)
                 .Include(st => st.BookingDetails)
-                .Include(st => st.Movie)
                 .FirstOrDefault(st => st.Id == showTimeId);
 
-            if (showtime == null) return NotFound();
+            if (showtime == null)
+            {
+                return NotFound("Suất chiếu không tồn tại.");
+            }
 
-            // Lấy các ghế đã đặt cho suất chiếu này (Status = "Booked" hoặc tuỳ bạn quy định)
-            var bookedSeatIds = showtime.BookingDetails
+            var bookedSeatIds = showtime.BookingDetails?
                 .Where(bd => bd.Status == "Booked")
                 .Select(bd => bd.SeatId)
                 .ToHashSet();
 
             ViewBag.ShowTime = showtime;
-            ViewBag.BookedSeatIds = bookedSeatIds;
+            ViewBag.BookedSeatIds = bookedSeatIds ?? new HashSet<int>();
             return View(showtime.Room.Seats.ToList());
         }
-        [HttpPost]
-        public IActionResult PaymentConfirmed(int showTimeId, List<int> selectedSeats)
+
+        public IActionResult Payment(int showTimeId, List<int> selectedSeats)
         {
-            // Lấy ra showtime để có giá vé
+            var userId = User.Identity.Name;
+            if (string.IsNullOrEmpty(userId) || !_context.Users.Any(u => u.Id == userId))
+            {
+                return BadRequest("Người dùng không tồn tại hoặc chưa đăng nhập.");
+            }
+
             var showtime = _context.ShowTimes.FirstOrDefault(st => st.Id == showTimeId);
             if (showtime == null) return NotFound();
 
-            var userId = User.Identity.Name ?? "guest"; // hoặc lấy theo User.Identity.GetUserId()
             var booking = new Booking
             {
                 UserId = userId,
                 BookingTime = DateTime.Now,
-                TotalAmount = 0, // sẽ tính sau
-                Status = "Confirmed",
+                TotalAmount = 0,
+                Status = "Pending",
                 CreatedAt = DateTime.Now,
-                PromotionId = 1, // xử lý thực tế nếu có
-                PaymentId = 1, // xử lý thực tế nếu có
+                PromotionId = 0,
+                PaymentId = 0,
                 BookingDetails = new List<BookingDetail>()
             };
 
@@ -108,22 +103,30 @@ namespace OnlineMovieTicket.Controllers
                 {
                     ShowTimeId = showTimeId,
                     SeatId = seatId,
-                    Price = showtime.Price, // LẤY GIÁ TỪ SHOWTIME
+                    Price = showtime.Price,
                     Status = "Booked"
                 });
             }
-            booking.TotalAmount = booking.BookingDetails.Sum(bd => bd.Price);
 
+            booking.TotalAmount = booking.BookingDetails.Sum(bd => bd.Price);
             _context.Bookings.Add(booking);
             _context.SaveChanges();
-            return RedirectToAction("Success");
+
+            return RedirectToAction("ProcessPayment", new { bookingId = booking.Id });
+        }
+
+        public IActionResult ProcessPayment(int bookingId)
+        {
+            var booking = _context.Bookings.Include(b => b.BookingDetails).FirstOrDefault(b => b.Id == bookingId);
+            if (booking == null) return NotFound();
+
+            return View(booking);
         }
         // GET: Bookings
-        public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.Bookings.Include(b => b.User);
-            return View(await applicationDbContext.ToListAsync());
-        }
+        // public async Task<IActionResult> Index()
+        // {
+        //   return View(await _context.Bookings.ToListAsync());
+        // }
 
         // GET: Bookings/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -258,6 +261,6 @@ namespace OnlineMovieTicket.Controllers
         private bool BookingExists(int id)
         {
             return _context.Bookings.Any(e => e.Id == id);
-        }
+        }   
     }
 }

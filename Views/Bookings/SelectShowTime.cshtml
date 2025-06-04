@@ -1,36 +1,26 @@
 ﻿@model IEnumerable<OnlineMovieTicket.Models.ShowTime>
+
 @{
-    int cinemaId = ViewBag.CinemaId;
-    int movieId = ViewBag.MovieId;
-    var availableDates = ViewBag.AvailableDates as List<DateTime>;
-    DateTime selectedDate = ViewBag.SelectedDate;
+    ViewData["Title"] = "Chọn suất chiếu";
 }
+
 <h2>Chọn suất chiếu</h2>
-<div>
-    @foreach (var d in availableDates)
-    {
-        <a href="@Url.Action("SelectShowTime", new { cinemaId, movieId, date = d.ToString("yyyy-MM-dd") })"
-           style="margin-right:16px;@(d == selectedDate ? "font-weight:bold;" : "")">@d.ToString("dd/MM/yyyy")</a>
-    }
-</div>
-<ul>
-    @foreach (var show in Model)
-    {
-        // Số ghế trống = tổng ghế phòng - số BookingDetail của suất này có Status = "Booked"
-        var totalSeats = show.Room.Seats.Count();
-        var bookedSeats = show.BookingDetails?.Count(bd => bd.Status == "Booked") ?? 0;
-        var seatsLeft = totalSeats - bookedSeats;
-        <li>
-            <b>@show.StartTime.ToString("HH:mm") - Phòng: @show.Room.Name</b> |
-            <span>@seatsLeft ghế trống</span>
-            @if (seatsLeft > 0 && show.Status == "Active")
-            {
-                <a href="@Url.Action("SelectSeat", new { showTimeId = show.Id })">Đặt vé</a>
-            }
-            else
-            {
-                <span style="color:red;">Hết vé</span>
-            }
-        </li>
-    }
-</ul>
+@if (Model.Any())
+{
+    <div class="row">
+        @foreach (var showtime in Model)
+        {
+            <div class="col-md-3">
+                <div class="showtime-card">
+                    <h4>@showtime.StartTime.ToString("dd/MM/yyyy HH:mm")</h4>
+                    <p>Phòng chiếu: @showtime.Room.Name</p>
+                    <a href="/Bookings/SelectSeat?showTimeId=@showtime.Id" class="btn btn-primary">Chọn ghế</a>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>Hiện tại không có suất chiếu nào cho phim này.</p>
+}
