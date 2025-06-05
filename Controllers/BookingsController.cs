@@ -22,6 +22,7 @@ namespace OnlineMovieTicket.Controllers
         [HttpGet]
         public IActionResult SelectSeat(int showTimeId)
         {
+            
             var showTime = _context.ShowTimes
                 .Include(st => st.Movie)
                 .FirstOrDefault(st => st.Id == showTimeId);

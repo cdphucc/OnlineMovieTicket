@@ -28,7 +28,6 @@
         background: #1cb6e0;
         color: #fff;
         border-radius: 4px;
-        writing-mode: vertical-lr;
         font-weight: bold;
         padding: 4px 0;
     }
@@ -110,6 +109,9 @@
     }
 </style>
 
+<div style="margin:4px 0 0 0;font-size:16px;">
+    Suất chiếu: @showTime.StartTime.ToString("dd/MM/yyyy HH:mm")
+</div>
 <div class="seat-layout-container">
     <div style="overflow-x:auto; overflow-y:auto; max-width:900px; max-height:520px;">
         <form id="bookingForm" method="post" asp-action="Book" autocomplete="off">
@@ -192,7 +194,7 @@
         } else {
             let html = "";
             checked.forEach(el => {
-                html += `<div>Ghế <b>${el.closest('.seat-cell').innerText.trim()}</b></div>`;
+                html += `<div>Ghế <b>${el.closest('.seat-cell').innerText.trim()}: ${formatCurrency(seatPrice)}</b></div>`;
             });
             html += `<div style="margin-top:8px;font-weight:bold;">Tổng: ${formatCurrency(checked.length * seatPrice)}</div>`;
             infoPanel.innerHTML = html;
