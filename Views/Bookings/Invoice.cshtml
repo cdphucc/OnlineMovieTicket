@@ -1,0 +1,228 @@
+﻿@model OnlineMovieTicket.Models.Booking
+@{
+    ViewBag.Title = "Hóa đơn điện tử";
+    var firstDetail = Model.BookingDetails?.FirstOrDefault();
+    var showTime = firstDetail?.ShowTime;
+    var movie = showTime?.Movie;
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <!-- Success Alert -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <!-- Invoice Card -->
+            <div class="card shadow-lg">
+                <!-- Header -->
+                <div class="card-header bg-success text-white text-center py-4">
+                    <h3 class="mb-0">
+                        <i class="fas fa-ticket-alt me-2"></i>
+                        HÓA ĐƠN ĐIỆN TỬ
+                    </h3>
+                    <p class="mb-0 mt-2">CDPHUCC MOVIE TICKET</p>
+                </div>
+
+                <!-- Invoice Content -->
+                <div class="card-body p-4">
+
+                    <!-- Invoice Header Info -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="text-primary mb-3">THÔNG TIN HÓA ĐƠN</h6>
+                            <div class="row mb-2">
+                                <div class="col-5"><strong>Số hóa đơn:</strong></div>
+                                <div class="col-7"><span class="badge bg-primary fs-6">#@Model.Id</span></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5"><strong>Ngày đặt:</strong></div>
+                                <div class="col-7">@Model.BookingTime.ToString("dd/MM/yyyy HH:mm")</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5"><strong>Trạng thái:</strong></div>
+                                <div class="col-7">
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-check-circle me-1"></i>Đã thanh toán
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-primary mb-3">THÔNG TIN KHÁCH HÀNG</h6>
+                            <div class="row mb-2">
+                                <div class="col-4"><strong>Tên:</strong></div>
+                                <div class="col-8">@(Model.User?.UserName ?? User.Identity.Name)</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><strong>Email:</strong></div>
+                                <div class="col-8">@(Model.User?.Email ?? User.Identity.Name)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Movie & Showtime Info -->
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <h6 class="text-primary mb-3">THÔNG TIN VÉ XEM PHIM</h6>
+                            <div class="row mb-3">
+                                <div class="col-md-3"><strong>Tên phim:</strong></div>
+                                <div class="col-md-9">
+                                    <span class="text-success fs-5">@(movie?.Title ?? "N/A")</span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-3"><strong>Thể loại:</strong></div>
+                                <div class="col-md-9">@(movie?.Genre ?? "N/A")</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-3"><strong>Thời lượng:</strong></div>
+                                <div class="col-md-9">@(movie?.Duration ?? 0) phút</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-3"><strong>Suất chiếu:</strong></div>
+                                <div class="col-md-9">
+                                    <span class="badge bg-info fs-6">
+                                        <i class="fas fa-calendar-alt me-1"></i>
+                                        @(showTime?.StartTime.ToString("dd/MM/yyyy") ?? "N/A")
+                                    </span>
+                                    <span class="badge bg-warning text-dark fs-6 ms-2">
+                                        <i class="fas fa-clock me-1"></i>
+                                        @(showTime?.StartTime.ToString("HH:mm") ?? "N/A")
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-3"><strong>Ghế đã chọn:</strong></div>
+                                <div class="col-md-9">
+                                    @if (Model.BookingDetails != null)
+                                    {
+                                        foreach (var detail in Model.BookingDetails)
+                                        {
+                                            <span class="badge bg-secondary me-1 fs-6">@(detail.Seat?.SeatNumber ?? "N/A")</span>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Payment Details -->
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <h6 class="text-primary mb-3">THÔNG TIN THANH TOÁN</h6>
+                            <div class="row mb-2">
+                                <div class="col-md-3"><strong>Phương thức:</strong></div>
+                                <div class="col-md-9">
+                                    <span class="badge bg-info fs-6">
+                                        <i class="fas fa-qrcode me-1"></i>QR Code
+                                    </span>
+                                </div>
+                            </div>
+                            @if (Model.Payment != null)
+                            {
+                                <div class="row mb-2">
+                                    <div class="col-md-3"><strong>Mã giao dịch:</strong></div>
+                                    <div class="col-md-9"><code>@Model.Payment.TransactionId</code></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-3"><strong>Thời gian thanh toán:</strong></div>
+                                    <div class="col-md-9">@Model.Payment.PaymentDate.ToString("dd/MM/yyyy HH:mm:ss")</div>
+                                </div>
+                                @if (!string.IsNullOrEmpty(Model.Payment.BankName))
+                                {
+                                    <div class="row mb-2">
+                                        <div class="col-md-3"><strong>Ngân hàng:</strong></div>
+                                        <div class="col-md-9">@Model.Payment.BankName</div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Total Amount -->
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="bg-light p-3 rounded">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <strong>Số lượng vé:</strong> @(Model.BookingDetails?.Count ?? 0) vé
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <strong>Giá mỗi vé:</strong> @(showTime?.Price.ToString("n0") ?? "0") VNĐ
+                                    </div>
+                                </div>
+                                <hr class="my-2">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h5 class="mb-0"><strong>TỔNG TIỀN:</strong></h5>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <h4 class="mb-0 text-danger">
+                                            <strong>@Model.TotalAmount.ToString("n0") VNĐ</strong>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="text-center">
+                        <button onclick="window.print()" class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-print me-2"></i>In hóa đơn
+                        </button>
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-success btn-lg">
+                            <i class="fas fa-home me-2"></i>Về trang chủ
+                        </a>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="text-center mt-4 pt-3 border-top">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Vui lòng xuất trình hóa đơn này tại quầy để nhận vé.<br>
+                            Cảm ơn bạn đã sử dụng dịch vụ CDPHUCC MOVIE TICKET!
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @@media print {
+        .btn, .alert {
+            display: none !important;
+        }
+        .card {
+            box-shadow: none !important;
+            border: 1px solid #000 !important;
+        }
+    }
+</style>
+
+<script>
+    // Auto-hide success alert after 5 seconds
+    setTimeout(function() {
+        var alert = document.querySelector('.alert-success');
+        if (alert) {
+            var bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        }
+    }, 5000);
+</script>

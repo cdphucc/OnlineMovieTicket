@@ -434,4 +434,11 @@ D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\n
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\8cxah9kkha-tqoay7vjj1.gz
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\OnlineMovieTicket.sourcelink.json
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\3hxb4eunim-3r8b2a0bt1.gz
+D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\net9.0\Microsoft.Extensions.Configuration.dll
+D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\net9.0\Microsoft.Extensions.Configuration.Binder.dll
+D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\net9.0\Microsoft.Extensions.Diagnostics.dll
+D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\net9.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\net9.0\Microsoft.Extensions.Http.dll
+D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\net9.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\net9.0\QRCoder.dll
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

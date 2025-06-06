@@ -196,12 +196,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ3NcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Bookings/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ3NcRGV0YWlscy5jc2h0bWw=
+[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Bookings/Invoice.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ3NcSW52b2ljZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Bookings/Payment.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ3NcUGF5bWVudC5jc2h0bWw=
+[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Bookings/PaymentQR.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ3NcUGF5bWVudFFSLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Bookings/SelectSeat.cshtml]

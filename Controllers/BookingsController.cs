@@ -8,16 +8,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OnlineMovieTicket.Data;
 using OnlineMovieTicket.Models;
+using OnlineMovieTicket.Services;
 
 namespace OnlineMovieTicket.Controllers
 {
     public class BookingsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IVietQRService _vietQrService;
 
-        public BookingsController(ApplicationDbContext context)
+        public BookingsController(ApplicationDbContext context, IVietQRService vietQrService)
         {
             _context = context;
+            _vietQrService = vietQrService;
         }
         [HttpGet]
         public IActionResult SelectSeat(int showTimeId)
@@ -89,36 +92,89 @@ namespace OnlineMovieTicket.Controllers
         [HttpGet]
         public IActionResult Payment(int bookingId)
         {
-            var booking = _context.Bookings
-                .Include(b => b.BookingDetails)
-                    .ThenInclude(d => d.Seat)
-                .Include(b => b.BookingDetails)
-                    .ThenInclude(d => d.ShowTime)
-                .FirstOrDefault(b => b.Id == bookingId);
-
-            if (booking == null || booking.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier) || booking.Status != "Pending")
+            return RedirectToAction("PaymentQR" ,new {bookingId = bookingId}); // <- phải có model truyền vào đây
+        }
+        [HttpGet]
+        public async Task<IActionResult> PaymentQR(int bookingId)
+        {
+            try
             {
+                var booking = _context.Bookings
+                    .Include(b => b.BookingDetails)
+                        .ThenInclude(d => d.ShowTime)
+                            .ThenInclude(st => st.Movie)
+                    .Include(b => b.User)
+                    .FirstOrDefault(b => b.Id == bookingId);
+                if (booking == null || booking.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier) || booking.Status != "Pending")
+                {
+                    TempData["ErrorMessage"] = "Không tìm thấy đơn đặt vé!";
+                    return RedirectToAction("Index", "Home");
+                }
+                var movieTitle = booking.BookingDetails.First().ShowTime?.Movie?.Title ?? "Vé xem phim";
+                var description = $"Thanh toan {movieTitle} - Don hang #{bookingId}";
+                var qrRequest = new VietQRRequestModel
+                {
+                    BookingId = bookingId,
+                    AccountNo = HttpContext.RequestServices.GetService<IConfiguration>()["VietQR:AccountNo"],
+                    AccountName = HttpContext.RequestServices.GetService<IConfiguration>()["VietQR:AccountName"],
+                    BankId = HttpContext.RequestServices.GetService<IConfiguration>()["VietQR:BankId"],
+                    Amount = booking.TotalAmount,
+                    Description = description,
+                    Template = "compact2"
+                };
+                var qrResult = await _vietQrService.GenerateQRCodeAsync(qrRequest);
+                if (!qrResult.Success)
+                {
+                    TempData["ErrorMessage"] = "Không thể tạo mã QR thanh toán!";
+                    return RedirectToAction("SelectSeat", "Bookings");
+                }
+                ViewBag.Booking = booking;
+                ViewBag.QRCode = qrResult;
+                return View(qrResult);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Lỗi khi tạo mã QR: {ex.Message}";
                 return RedirectToAction("SelectSeat", "Bookings");
             }
-            return View(booking); // <- phải có model truyền vào đây
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ConfirmPayment(int bookingId)
+        public IActionResult ConfirmQRPayment(int bookingId)
         {
-            var booking = _context.Bookings.FirstOrDefault(b => b.Id == bookingId);
-
-            if (booking == null || booking.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier) || booking.Status != "Pending")
+            try
             {
-                return RedirectToAction("SelectSeat", "Bookings");
+                var booking = _context.Bookings
+                    .FirstOrDefault(b => b.Id == bookingId && b.Status == "Pending");
+                if (booking == null)
+                {
+                    TempData["ErrorMessage"] = "Không tìm thấy đơn đặt vé hoặc đơn đã được xử lý!";
+                    return RedirectToAction("SelectSeat", "Bookings");
+                }
+                var payment = new Payment
+                {
+                    BookingId = booking.Id,
+                    Amount = booking.TotalAmount,
+                    PaymentMethod = "VietQR",
+                    TransactionId = $"QR_{DateTime.Now:yyyyMMddHHmmss}_{booking.Id}",
+                    Status = "Completed",
+                    PaymentDate = DateTime.Now,
+                    BankAccountNo = HttpContext.RequestServices.GetService<IConfiguration>()["VietQR:AccountNo"],
+                    BankName = HttpContext.RequestServices.GetService<IConfiguration>()["VietQR:BankName"]
+                };
+                booking.Status = "Active"; // Cập nhật trạng thái đặt vé
+                _context.Payments.Add(payment);
+                _context.SaveChanges();
+                TempData["SuccessMessage"] = "Thanh toán thành công!";
+                return RedirectToAction("Invoice", new { bookingId = booking.Id });
             }
-            booking.Status = "Active";
-            _context.SaveChanges();
-
-            return RedirectToAction("Confirmation", new { bookingId = bookingId });
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Lỗi khi xác nhận thanh toán: {ex.Message}";
+                return RedirectToAction("PaymentQR", new { bookingId = bookingId });
+            }
         }
-
+            
         [HttpGet]
         public IActionResult Confirmation(int bookingId)
         {
@@ -132,6 +188,26 @@ namespace OnlineMovieTicket.Controllers
             if (booking == null || booking.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier) || booking.Status != "Active")
             {
                 return RedirectToAction("SelectSeat", "Bookings");
+            }
+            return View(booking);
+        }
+
+        [HttpGet]
+        public IActionResult Invoice(int bookingId)
+        {
+            var booking = _context.Bookings
+                .Include(b => b.BookingDetails)
+                    .ThenInclude(d => d.Seat)
+                .Include(b => b.BookingDetails)
+                    .ThenInclude(d => d.ShowTime)
+                        .ThenInclude(st => st.Movie)
+                .Include(b => b.Payment)
+                .Include(b => b.User)
+                .FirstOrDefault(b => b.Id == bookingId);
+            if (booking == null || booking.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier) || booking.Status != "Active")
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy hóa đơn!";
+                return RedirectToAction("Index", "Home");
             }
             return View(booking);
         }
