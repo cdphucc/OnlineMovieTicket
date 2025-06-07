@@ -429,7 +429,6 @@ D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\n
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\net9.0\runtimes\win-arm64\native\e_sqlite3.dll
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\net9.0\runtimes\win-x64\native\e_sqlite3.dll
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\net9.0\runtimes\win-x86\native\e_sqlite3.dll
-D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\in04juywmt-5zig82ig2x.gz
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\1gemnftuw6-tqoay7vjj1.gz
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\8cxah9kkha-tqoay7vjj1.gz
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\OnlineMovieTicket.sourcelink.json
@@ -441,7 +440,8 @@ D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\n
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\net9.0\Microsoft.Extensions.Http.dll
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\net9.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\net9.0\QRCoder.dll
-D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\0j71phq2h7-awczqbtcnu.gz
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\net9.0\SendGrid.dll
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\net9.0\StarkbankEcdsa.dll
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\in04juywmt-5uzoe74a90.gz
+D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\0j71phq2h7-udsmeln9az.gz
