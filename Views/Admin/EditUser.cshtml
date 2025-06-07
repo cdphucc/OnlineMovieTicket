@@ -1,4 +1,4 @@
-﻿@model OnlineMovieTicket.Controllers.EditUserViewModel
+﻿@model OnlineMovieTicket.Models.ViewModels.EditUserViewModel
 @{
     ViewData["Title"] = "Edit User";
 }
@@ -17,8 +17,6 @@
                         <input type="hidden" asp-for="Id" />
                         <input type="hidden" asp-for="CreatedAt" />
                         <input type="hidden" asp-for="UpdatedAt" />
-                        <input type="hidden" asp-for="CreatedBy" />
-                        <input type="hidden" asp-for="UpdatedBy" />
                         
                         <!-- Personal Information Section -->
                         <div class="card mb-4">
@@ -42,54 +40,6 @@
                                             <small class="form-text text-muted">Changing email will also update the username.</small>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
-                                            <input asp-for="PhoneNumber" class="form-control" />
-                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label asp-for="Gender" class="form-label">Gender</label>
-                                            <select asp-for="Gender" class="form-select">
-                                                <option value="">-- Select Gender --</option>
-                                                @foreach (var gender in ViewBag.Genders as List<string>)
-                                                {
-                                                    <option value="@gender">@gender</option>
-                                                }
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label asp-for="DateOfBirth" class="form-label">Date of Birth</label>
-                                            <input asp-for="DateOfBirth" class="form-control" type="date" />
-                                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label class="form-label">Email Confirmed</label>
-                                            <div class="form-check">
-                                                <input asp-for="EmailConfirmed" class="form-check-input" type="checkbox" />
-                                                <label asp-for="EmailConfirmed" class="form-check-label">
-                                                    Email is confirmed
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label asp-for="Address" class="form-label">Address</label>
-                                    <textarea asp-for="Address" class="form-control" rows="3" placeholder="Enter full address"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -132,22 +82,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
                                             <label class="form-label">Last Updated At</label>
-                                            <input value="@Model.UpdatedAt.ToString("yyyy-MM-dd HH:mm:ss")" class="form-control" readonly />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label class="form-label">Created By</label>
-                                            <input value="@Model.CreatedBy" class="form-control" readonly />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label class="form-label">Last Updated By</label>
-                                            <input value="@Model.UpdatedBy" class="form-control" readonly />
+                                            <input value="@(Model.UpdatedAt?.ToString("yyyy-MM-dd HH:mm:ss") ?? "Never")" class="form-control" readonly />
                                         </div>
                                     </div>
                                 </div>
@@ -181,8 +116,9 @@
         </div>
     </div>
 </div>
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <partial name="_ValidationScriptsPartial" />
     
     <script>
         $(document).ready(function() {
@@ -234,17 +170,9 @@
             });
 
             function isValidEmail(email) {
-                var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                var emailRegex = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
                 return emailRegex.test(email);
             }
-
-            // Phone number formatting (optional)
-            $('#PhoneNumber').on('input', function() {
-                var value = $(this).val().replace(/\D/g, '');
-                if (value.length >= 10) {
-                    $(this).removeClass('border-danger');
-                }
-            });
         });
     </script>
 }
