@@ -1,0 +1,151 @@
+﻿@{
+    ViewData["Title"] = "Manager Dashboard";
+    var userRole = ViewBag.UserRole as OnlineMovieTicket.Models.UserRole?;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-4">
+                <i class="fas fa-film me-2"></i>Manager Dashboard - Quản lý Rạp Phim
+            </h2>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h5>Tổng Phim</h5>
+                                    <h3>@ViewBag.TotalMovies</h3>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-video fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h5>Suất Chiếu</h5>
+                                    <h3>@ViewBag.TotalShowTimes</h3>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-calendar-alt fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h5>Tổng Booking</h5>
+                                    <h3>@ViewBag.TotalBookings</h3>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-ticket-alt fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h5>Booking Hôm Nay</h5>
+                                    <h3>@ViewBag.TodayBookings</h3>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-calendar-day fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-cogs me-2"></i>Quản Lý Nhanh
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    <a href="@Url.Action("Movies")" class="btn btn-primary btn-lg w-100">
+                                        <i class="fas fa-video mb-2 d-block"></i>
+                                        Quản Lý Phim
+                                    </a>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <a href="@Url.Action("ShowTimes")" class="btn btn-success btn-lg w-100">
+                                        <i class="fas fa-calendar-alt mb-2 d-block"></i>
+                                        Lịch Chiếu
+                                    </a>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <a href="@Url.Action("Bookings")" class="btn btn-warning btn-lg w-100">
+                                        <i class="fas fa-ticket-alt mb-2 d-block"></i>
+                                        Xem Booking
+                                    </a>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <a href="@Url.Action("CreateMovie")" class="btn btn-info btn-lg w-100">
+                                        <i class="fas fa-plus mb-2 d-block"></i>
+                                        Thêm Phim Mới
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activities -->
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-clock me-2"></i>Quyền Hạn Manager
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <h6><i class="fas fa-info-circle me-2"></i>Bạn có thể:</h6>
+                                <ul class="mb-0">
+                                    <li>✅ Thêm, sửa, xóa phim</li>
+                                    <li>✅ Quản lý lịch chiếu</li>
+                                    <li>✅ Xem danh sách booking</li>
+                                    <li>✅ Xem báo cáo rạp phim</li>
+                                </ul>
+                            </div>
+                            <div class="alert alert-warning">
+                                <h6><i class="fas fa-exclamation-triangle me-2"></i>Bạn KHÔNG thể:</h6>
+                                <ul class="mb-0">
+                                    <li>❌ Quản lý users (chỉ Admin mới có quyền)</li>
+                                    <li>❌ Thay đổi cài đặt hệ thống</li>
+                                    <li>❌ Truy cập Admin Dashboard</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

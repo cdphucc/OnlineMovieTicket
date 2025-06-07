@@ -26,7 +26,6 @@ namespace OnlineMovieTicket.Services
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null) return false;
 
-            // Update custom Role property
             user.Role = role;
             user.UpdatedAt = DateTime.UtcNow;
             user.UpdatedBy = assignedBy;
@@ -40,8 +39,6 @@ namespace OnlineMovieTicket.Services
 
             // Add to new role
             var roleName = role.ToString();
-
-            // Ensure role exists in AspNetRoles
             if (!await _roleManager.RoleExistsAsync(roleName))
             {
                 await _roleManager.CreateAsync(new IdentityRole(roleName));
@@ -65,13 +62,21 @@ namespace OnlineMovieTicket.Services
 
             return permission switch
             {
+                // Admin có tất cả quyền
                 "ManageUsers" => userRole == UserRole.Admin,
                 "ManageWebsite" => userRole == UserRole.Admin,
-                "ManageTheaters" => userRole == UserRole.Admin || userRole == UserRole.Manager,
+                "ManageSystemSettings" => userRole == UserRole.Admin,
+
+                // Manager chỉ có quyền liên quan đến rạp phim
                 "ManageMovies" => userRole == UserRole.Admin || userRole == UserRole.Manager,
-                "ManageBookings" => userRole == UserRole.Admin || userRole == UserRole.Manager,
-                "ViewReports" => userRole == UserRole.Admin || userRole == UserRole.Manager,
-                "BookTickets" => true, // All authenticated users can book tickets
+                "ManageShowTimes" => userRole == UserRole.Admin || userRole == UserRole.Manager,
+                "ViewBookings" => userRole == UserRole.Admin || userRole == UserRole.Manager,
+                "ManageTheaters" => userRole == UserRole.Admin || userRole == UserRole.Manager,
+                "ViewCinemaReports" => userRole == UserRole.Admin || userRole == UserRole.Manager,
+
+                // Tất cả user có thể đặt vé
+                "BookTickets" => true,
+
                 _ => false
             };
         }
@@ -89,12 +94,10 @@ namespace OnlineMovieTicket.Services
             var managerRole = await GetUserRoleAsync(managerId);
             var targetUserRole = await GetUserRoleAsync(targetUserId);
 
-            // Admin can manage everyone
+            // Chỉ Admin mới có thể quản lý users
             if (managerRole == UserRole.Admin) return true;
 
-            // Manager can only manage regular users, not other managers or admins
-            if (managerRole == UserRole.Manager && targetUserRole == UserRole.User) return true;
-
+            // Manager KHÔNG thể quản lý users
             return false;
         }
     }
