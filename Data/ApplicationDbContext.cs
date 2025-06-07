@@ -5,7 +5,7 @@ using OnlineMovieTicket.Models;
 
 namespace OnlineMovieTicket.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -55,6 +55,9 @@ namespace OnlineMovieTicket.Data
             modelBuilder.Entity<ShowTime>()
                 .Property(st => st.Price)
                 .HasPrecision(18, 0);
+            modelBuilder.Entity<ApplicationUser>()
+                .Property(u => u.Role)
+                .HasConversion<int>();
         }  
     }
 }

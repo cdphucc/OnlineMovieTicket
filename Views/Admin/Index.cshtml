@@ -1,0 +1,55 @@
+﻿@model List<OnlineMovieTicket.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Admin Dashboard</h2>
+
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <h5>Total Users</h5>
+                            <h3>@Model.Count</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <h5>Admins</h5>
+                            <h3>@Model.Count(u => u.Role == OnlineMovieTicket.Models.UserRole.Admin)</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <h5>Managers</h5>
+                            <h3>@Model.Count(u => u.Role == OnlineMovieTicket.Models.UserRole.Manager)</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <h5>Customers</h5>
+                            <h3>@Model.Count(u => u.Role == OnlineMovieTicket.Models.UserRole.User)</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="@Url.Action("UserManagement")" class="btn btn-primary">Manage Users</a>
+                    <a href="@Url.Action("Movies", "Manager")" class="btn btn-secondary">Manage Movies</a>
+                    <a href="@Url.Action("Bookings", "Manager")" class="btn btn-info">View Bookings</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -14,9 +14,22 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => 
+{
+    options.SignIn.RequireConfirmedAccount = true;
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 8;
+})
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+//Configrue Authorization Policies
+builder.Services.ConfigureAuthorizationPolicies();
+// Add custom services
+builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<IVietQRService, VietQRService>();
 builder.Services.AddControllersWithViews();
@@ -24,6 +37,16 @@ builder.Services.AddRazorPages();
 builder.Services.AddTransient<IEmailSender, DummyEmailSender>();
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseMigrationsEndPoint();
+}
+else
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
 
 
 using (var scope = app.Services.CreateScope())
@@ -81,9 +104,12 @@ using (var scope = app.Services.CreateScope())
         app.UseHsts();
     }
 
+
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

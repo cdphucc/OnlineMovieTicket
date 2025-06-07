@@ -1,0 +1,81 @@
+﻿@model List<OnlineMovieTicket.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<div class="container-fluid">
+    <h2>User Management</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.FullName</td>
+                        <td>@user.Email</td>
+                        <td>
+                            <span class="badge @(user.Role == OnlineMovieTicket.Models.UserRole.Admin ? "bg-danger" :
+                                                user.Role == OnlineMovieTicket.Models.UserRole.Manager ? "bg-warning" : "bg-primary")">
+                                @user.Role
+                            </span>
+                        </td>
+                        <td>@user.CreatedAt.ToString("MM/dd/yyyy")</td>
+                        <td>
+                            <a href="@Url.Action("EditUser", new { id = user.Id })" class="btn btn-sm btn-primary">Edit</a>
+                            @if (user.Role != OnlineMovieTicket.Models.UserRole.Admin)
+                            {
+                                <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete('@user.Id', '@user.FullName')">Delete</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(userId, userName) {
+        if (confirm(`Are you sure you want to delete user "${userName}"?`)) {
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '@Url.Action("DeleteUser")';
+
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'id';
+            input.value = userId;
+            form.appendChild(input);
+
+            var token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            var tokenInput = document.createElement('input');
+            tokenInput.type = 'hidden';
+            tokenInput.name = '__RequestVerificationToken';
+            tokenInput.value = token;
+            form.appendChild(tokenInput);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+</script>
