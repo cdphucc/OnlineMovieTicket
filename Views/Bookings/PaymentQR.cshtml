@@ -115,8 +115,21 @@ else
                                 </button>
                             </form>
 
+                            <!-- Nút hủy giao dịch -->
+                            <form asp-action="CancelTransaction" method="post" id="cancelForm" class="mb-2">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="bookingId" value="@booking.Id" />
+                                <button type="submit" class="btn btn-danger btn-lg" id="cancelBtn">
+                                    <i class="fas fa-times-circle me-2"></i>Hủy giao dịch
+                                </button>
+                            </form>
+
                             <a href="@Url.Action("PaymentQR", new { bookingId = booking.Id })" class="btn btn-outline-secondary">
-                                <i class="fas fa-arrow-left me-1"></i>Chọn phương thức khác
+                                <i class="fas fa-refresh me-1"></i>Làm mới trang
+                            </a>
+
+                            <a href="@Url.Action("Index", "Home")" class="btn btn-outline-info">
+                                <i class="fas fa-home me-1"></i>Về trang chủ
                             </a>
                         </div>
 
@@ -139,21 +152,11 @@ else
         color: #dc3545 !important;
         animation: blink 1s infinite;
     }
-
-    @@keyframes blink {
-        0%, 50% {
-            opacity: 1;
-        }
-
-        51%, 100% {
-            opacity: 0.5;
-        }
-    }
 </style>
 
 <script>
     // Countdown Timer (15 minutes)
-    let timeLeft = 7 * 60; // 15 minutes in seconds
+    let timeLeft = 7 * 60; // 7 minutes in seconds
 
     function updateCountdown() {
         const minutes = Math.floor(timeLeft / 60);
@@ -173,14 +176,27 @@ else
                 clearInterval(countdownInterval);
                 countdownElement.textContent = 'Hết thời gian';
                 const confirmBtn = document.getElementById('confirmBtn');
+                const cancelBtn = document.getElementById('cancelBtn');
+
                 if (confirmBtn) {
                     confirmBtn.disabled = true;
                     confirmBtn.innerHTML = '<i class="fas fa-times-circle me-2"></i>Hết thời gian thanh toán';
                     confirmBtn.className = 'btn btn-danger btn-lg mb-2';
                 }
 
+                if (cancelBtn) {
+                    cancelBtn.disabled = true;
+                    cancelBtn.innerHTML = '<i class="fas fa-times-circle me-2"></i>Hết thời gian';
+                    cancelBtn.className = 'btn btn-secondary btn-lg';
+                }
+
+                // Auto cancel after timeout
                 setTimeout(() => {
-                    window.location.href = '@Url.Action("Payment", new { bookingId = booking.Id })';
+                    if (confirm('Hết thời gian thanh toán. Bạn có muốn hủy giao dịch không?')) {
+                        document.getElementById('cancelForm').submit();
+                    } else {
+                        window.location.href = '@Url.Action("Index", "Home")';
+                    }
                 }, 3000);
                 return;
             }
@@ -206,6 +222,24 @@ else
             if (btn) {
                 btn.disabled = true;
                 btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang xác nhận...';
+            }
+        });
+    }
+
+    // Cancel form submission
+    const cancelForm = document.getElementById('cancelForm');
+    if (cancelForm) {
+        cancelForm.addEventListener('submit', function(e) {
+            const confirmed = confirm('Bạn có chắc chắn muốn hủy giao dịch này? Ghế đã chọn sẽ được giải phóng.');
+            if (!confirmed) {
+                e.preventDefault();
+                return false;
+            }
+
+            const btn = document.getElementById('cancelBtn');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang hủy...';
             }
         });
     }

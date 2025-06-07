@@ -99,6 +99,7 @@ namespace OnlineMovieTicket.Controllers
 
             return Json(new { success = true, redirectUrl = Url.Action("PaymentQR", new { bookingId = booking.Id }) });
         }
+
         public async Task<IActionResult> PaymentQR(int bookingId)
         {
             try
@@ -119,6 +120,13 @@ namespace OnlineMovieTicket.Controllers
                 {
                     Console.WriteLine("❌ Booking not found");
                     TempData["ErrorMessage"] = "Không tìm thấy đơn đặt vé!";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // Kiểm tra nếu booking đã bị hủy
+                if (booking.Status == "Cancelled")
+                {
+                    TempData["ErrorMessage"] = "Đơn đặt vé này đã bị hủy!";
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -157,6 +165,42 @@ namespace OnlineMovieTicket.Controllers
             }
         }
 
+        // Thêm action để hủy giao dịch
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CancelTransaction(int bookingId)
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var booking = await _context.Bookings
+                    .Include(b => b.BookingDetails)
+                    .FirstOrDefaultAsync(b => b.Id == bookingId && b.UserId == userId && b.Status == "Pending");
+
+                if (booking == null)
+                {
+                    TempData["ErrorMessage"] = "Không tìm thấy đơn đặt vé hoặc bạn không có quyền hủy!";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // Cập nhật trạng thái booking thành "Cancelled"
+                booking.Status = "Cancelled";
+                booking.CancelledAt = DateTime.Now; // Nếu có trường này trong model
+
+                // Xóa các booking details để giải phóng ghế
+                _context.BookingDetails.RemoveRange(booking.BookingDetails);
+
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Đã hủy giao dịch thành công. Ghế đã được giải phóng.";
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Lỗi khi hủy giao dịch: {ex.Message}";
+                return RedirectToAction("PaymentQR", new { bookingId = bookingId });
+            }
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -192,7 +236,7 @@ namespace OnlineMovieTicket.Controllers
 
                     if (!string.IsNullOrEmpty(booking.User.Email))
                     {
-                       _emailService.SendInvoiceEmailAsync(booking.User.Email, booking.User.FullName ?? booking.User.Email, booking);
+                        _emailService.SendInvoiceEmailAsync(booking.User.Email, booking.User.FullName ?? booking.User.Email, booking);
                     }
                 }
                 catch (Exception emailEx)
@@ -209,6 +253,7 @@ namespace OnlineMovieTicket.Controllers
                 return RedirectToAction("PaymentQR", new { bookingId = bookingId });
             }
         }
+
         [HttpGet]
         public IActionResult Invoice(int bookingId)
         {

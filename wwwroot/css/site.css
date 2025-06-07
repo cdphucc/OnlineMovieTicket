@@ -154,7 +154,7 @@ body {
     display: flex;
     justify-content: right;
     align-items: center;
-    width: 70%;
+    width: 84% !important;
 }
 .header-navigation ul {
     display: flex;

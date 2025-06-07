@@ -8,6 +8,7 @@
         public decimal TotalAmount { get; set; }
         public string Status { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime CancelledAt { get; set; } // Thời gian hủy đặt vé, nếu có
         // Nếu cần, giữ lại payment
         public int PaymentId { get; set; }
         public ApplicationUser User { get; set; }
