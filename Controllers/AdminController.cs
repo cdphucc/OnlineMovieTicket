@@ -5,6 +5,8 @@ using OnlineMovieTicket.Models.ViewModels;
 using OnlineMovieTicket.Services;
 using OnlineMovieTicket.Attributes;
 using Microsoft.EntityFrameworkCore;
+using OnlineMovieTicket.Data;
+using SendGrid.Helpers.Mail;
 
 namespace OnlineMovieTicket.Controllers
 {
@@ -13,18 +15,35 @@ namespace OnlineMovieTicket.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRoleService _roleService;
+        private readonly ApplicationDbContext _context;
 
-        public AdminController(UserManager<ApplicationUser> userManager, IRoleService roleService)
+        public AdminController(UserManager<ApplicationUser> userManager, IRoleService roleService, ApplicationDbContext context)
         {
             _userManager = userManager;
             _roleService = roleService;
+            _context = context;
         }
 
         // Admin Dashboard
         public async Task<IActionResult> Index()
         {
-            var users = await _userManager.Users.ToListAsync();
-            return View(users);
+            var totalUsers = await _userManager.Users.CountAsync();
+            var totalMovies = await _context.Movies.CountAsync();
+            var totalBookings = await _context.Bookings.CountAsync();
+            var totalRevenue = await _context.Payments
+                .Where(p => p.Status == "Completed")
+                .SumAsync(p => p.Amount);
+            var todayBookings = await _context.Bookings
+                .Where(b => b.BookingTime.Date == DateTime.Today)
+                .CountAsync();
+
+            ViewBag.TotalUsers = totalUsers;
+            ViewBag.TotalMovies = totalMovies;
+            ViewBag.TotalBookings = totalBookings;
+            ViewBag.TotalRevenue = totalRevenue;
+            ViewBag.TodayBookings = todayBookings;
+
+            return View();
         }
 
         // User Management List
@@ -309,5 +328,313 @@ namespace OnlineMovieTicket.Controllers
 
             return new string(password);
         }
+        public async Task<IActionResult> MovieManagement()
+        {
+            var movies = await _context.Movies
+                .Include(m => m.ShowTimes)
+                .OrderByDescending(m => m.CreatedAt)
+                .ToListAsync();
+            return View(movies);
+        }
+
+        [HttpGet]
+        public IActionResult CreateMovie()
+        {
+            ViewBag.Genres = new List<string>
+            {
+                "Action", "Comedy", "Drama", "Horror", "Romance",
+                "Sci-Fi", "Thriller", "Animation", "Documentary", "Adventure"
+            };
+            ViewBag.Statuses = new List<string> { "NowShowing", "ComingSoon", "Ended" };
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateMovie(Movie movie, IFormFile? posterFile)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Xử lý upload poster nếu có
+                    if (posterFile != null && posterFile.Length > 0)
+                    {
+                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "posters");
+                        Directory.CreateDirectory(uploadsFolder);
+
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + posterFile.FileName;
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await posterFile.CopyToAsync(fileStream);
+                        }
+
+                        movie.PosterUrl = "/images/posters/" + uniqueFileName;
+                    }
+
+                    movie.CreatedAt = DateTime.Now;
+                    movie.UpdatedAt = DateTime.Now;
+                    movie.Status = movie.Status ?? "ComingSoon";
+
+                    _context.Movies.Add(movie);
+                    await _context.SaveChangesAsync();
+
+                    TempData["SuccessMessage"] = "Phim đã được thêm thành công!";
+                    return RedirectToAction(nameof(MovieManagement));
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorMessage"] = "Có lỗi xảy ra khi thêm phim!";
+                }
+            }
+
+            ViewBag.Genres = new List<string>
+            {
+                "Action", "Comedy", "Drama", "Horror", "Romance",
+                "Sci-Fi", "Thriller", "Animation", "Documentary", "Adventure"
+            };
+            ViewBag.Statuses = new List<string> { "NowShowing", "ComingSoon", "Ended" };
+            return View(movie);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditMovie(int id)
+        {
+            var movie = await _context.Movies.FindAsync(id);
+            if (movie == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy phim!";
+                return RedirectToAction(nameof(MovieManagement));
+            }
+
+            ViewBag.Genres = new List<string>
+            {
+                "Action", "Comedy", "Drama", "Horror", "Romance",
+                "Sci-Fi", "Thriller", "Animation", "Documentary", "Adventure"
+            };
+            ViewBag.Statuses = new List<string> { "NowShowing", "ComingSoon", "Ended" };
+            return View(movie);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditMovie(int id, Movie movie, IFormFile? posterFile)
+        {
+            if (id != movie.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var existingMovie = await _context.Movies.FindAsync(id);
+                    if (existingMovie == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Xử lý upload poster mới nếu có
+                    if (posterFile != null && posterFile.Length > 0)
+                    {
+                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "posters");
+                        Directory.CreateDirectory(uploadsFolder);
+
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + posterFile.FileName;
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await posterFile.CopyToAsync(fileStream);
+                        }
+
+                        movie.PosterUrl = "/images/posters/" + uniqueFileName;
+                    }
+                    else
+                    {
+                        movie.PosterUrl = existingMovie.PosterUrl;
+                    }
+
+                    existingMovie.Title = movie.Title;
+                    existingMovie.Description = movie.Description;
+                    existingMovie.Genre = movie.Genre;
+                    existingMovie.Duration = movie.Duration;
+                    existingMovie.ReleaseDate = movie.ReleaseDate;
+                    existingMovie.PosterUrl = movie.PosterUrl;
+                    existingMovie.TrailerUrl = movie.TrailerUrl;
+                    existingMovie.Status = movie.Status;
+                    existingMovie.UpdatedAt = DateTime.Now;
+
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Phim đã được cập nhật thành công!";
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    TempData["ErrorMessage"] = "Có lỗi xảy ra khi cập nhật phim!";
+                }
+                return RedirectToAction(nameof(MovieManagement));
+            }
+
+            ViewBag.Genres = new List<string>
+            {
+                "Action", "Comedy", "Drama", "Horror", "Romance",
+                "Sci-Fi", "Thriller", "Animation", "Documentary", "Adventure"
+            };
+            ViewBag.Statuses = new List<string> { "NowShowing", "ComingSoon", "Ended" };
+            return View(movie);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteMovie(int id)
+        {
+            var movie = await _context.Movies.FindAsync(id);
+            if (movie != null)
+            {
+                // Kiểm tra xem phim có suất chiếu đang hoạt động không
+                var hasActiveShowTimes = await _context.ShowTimes
+                    .AnyAsync(st => st.MovieId == id && st.StartTime > DateTime.Now);
+
+                if (hasActiveShowTimes)
+                {
+                    TempData["ErrorMessage"] = "Không thể xóa phim vì còn suất chiếu đang hoạt động!";
+                    return RedirectToAction(nameof(MovieManagement));
+                }
+
+                _context.Movies.Remove(movie);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Phim đã được xóa thành công!";
+            }
+            return RedirectToAction(nameof(MovieManagement));
+        }
+
+        // QUẢN LÝ BOOKING
+        public async Task<IActionResult> BookingManagement()
+        {
+            var bookings = await _context.Bookings
+                .Include(b => b.User)
+                .Include(b => b.BookingDetails)
+                    .ThenInclude(bd => bd.ShowTime)
+                    .ThenInclude(st => st.Movie)
+                .Include(b => b.BookingDetails)
+                    .ThenInclude(bd => bd.Seat)
+                .OrderByDescending(b => b.CreatedAt)
+                .ToListAsync();
+            return View(bookings);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CancelBooking(int id)
+        {
+            var booking = await _context.Bookings
+                .Include(b => b.BookingDetails)
+                .FirstOrDefaultAsync(b => b.Id == id);
+
+            if (booking != null && booking.Status != "Cancelled")
+            {
+                booking.Status = "Cancelled";
+
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Đã hủy booking thành công!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Không thể hủy booking này!";
+            }
+
+            return RedirectToAction(nameof(BookingManagement));
+        }
+
+        // QUẢN LÝ LỊCH CHIẾU
+        public async Task<IActionResult> ShowTimeManagement()
+        {
+            var showTimes = await _context.ShowTimes
+                .Include(st => st.Movie)
+                .Include(st => st.Room)
+                .OrderBy(st => st.StartTime)
+                .ToListAsync();
+            return View(showTimes);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CreateShowTime()
+        {
+            ViewBag.Movies = await _context.Movies
+                .Where(m => m.Status == "NowShowing" || m.Status == "ComingSoon")
+                .ToListAsync();
+            ViewBag.Rooms = await _context.Rooms.ToListAsync();
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateShowTime(ShowTime showTime)
+        {
+            if (ModelState.IsValid)
+            {
+                // Kiểm tra conflict về thời gian và phòng
+                var movie = await _context.Movies.FindAsync(showTime.MovieId);
+                var endTime = showTime.StartTime.AddMinutes(movie?.Duration ?? 120);
+
+                var conflictingShowTime = await _context.ShowTimes
+                    .AnyAsync(st => st.RoomId == showTime.RoomId &&
+                                   st.StartTime.Date == showTime.StartTime.Date &&
+                                   ((st.StartTime <= showTime.StartTime && st.StartTime.AddMinutes(st.Movie.Duration + 30) > showTime.StartTime) ||
+                                    (showTime.StartTime <= st.StartTime && endTime.AddMinutes(30) > st.StartTime)));
+
+                if (conflictingShowTime)
+                {
+                    TempData["ErrorMessage"] = "Phòng đã có suất chiếu trong khoảng thời gian này (bao gồm 30 phút dọn dẹp)!";
+                    ViewBag.Movies = await _context.Movies
+                        .Where(m => m.Status == "NowShowing" || m.Status == "ComingSoon")
+                        .ToListAsync();
+                    ViewBag.Rooms = await _context.Rooms.ToListAsync();
+                    return View(showTime);
+                }
+
+                showTime.Status = "Available";
+                _context.ShowTimes.Add(showTime);
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Suất chiếu đã được thêm thành công!";
+                return RedirectToAction(nameof(ShowTimeManagement));
+            }
+
+            ViewBag.Movies = await _context.Movies
+                .Where(m => m.Status == "NowShowing" || m.Status == "ComingSoon")
+                .ToListAsync();
+            ViewBag.Rooms = await _context.Rooms.ToListAsync();
+            return View(showTime);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteShowTime(int id)
+        {
+            var showTime = await _context.ShowTimes.FindAsync(id);
+            if (showTime != null)
+            {
+                // Kiểm tra xem có booking nào không
+                var hasBookings = await _context.BookingDetails
+                    .AnyAsync(bd => bd.ShowTimeId == id);
+
+                if (hasBookings)
+                {
+                    TempData["ErrorMessage"] = "Không thể xóa suất chiếu vì đã có người đặt vé!";
+                    return RedirectToAction(nameof(ShowTimeManagement));
+                }
+
+                _context.ShowTimes.Remove(showTime);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Suất chiếu đã được xóa thành công!";
+            }
+            return RedirectToAction(nameof(ShowTimeManagement));
+        }
+
+
     }
 }

@@ -1,77 +1,134 @@
-﻿@model List<OnlineMovieTicket.Models.ApplicationUser>
-@{
+﻿@{
     ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
             <h2 class="mb-4">
-                <i class="fas fa-crown me-2"></i>Admin Dashboard - Toàn Quyền Hệ Thống
+                <i class="fas fa-tachometer-alt"></i> Admin Dashboard
             </h2>
+        </div>
+    </div>
 
-            <div class="row mb-4">
-                <div class="col-md-3">
-                    <div class="card bg-primary text-white">
-                        <div class="card-body">
-                            <h5>Tổng Users</h5>
-                            <h3>@Model.Count</h3>
+    <!-- Thống kê tổng quan -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>@ViewBag.TotalUsers</h4>
+                            <p>Tổng người dùng</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-users fa-2x"></i>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card bg-danger text-white">
-                        <div class="card-body">
-                            <h5>Admins</h5>
-                            <h3>@Model.Count(u => u.Role == OnlineMovieTicket.Models.UserRole.Admin)</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card bg-warning text-white">
-                        <div class="card-body">
-                            <h5>Managers</h5>
-                            <h3>@Model.Count(u => u.Role == OnlineMovieTicket.Models.UserRole.Manager)</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card bg-info text-white">
-                        <div class="card-body">
-                            <h5>Customers</h5>
-                            <h3>@Model.Count(u => u.Role == OnlineMovieTicket.Models.UserRole.Customer)</h3>
-                        </div>
-                    </div>
+                <div class="card-footer">
+                    <a href="@Url.Action("UserManagement")" class="text-white">
+                        <small>Xem chi tiết <i class="fas fa-angle-right"></i></small>
+                    </a>
                 </div>
             </div>
+        </div>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5>Quản Lý Hệ Thống</h5>
+        <div class="col-lg-3 col-md-6">
+            <div class="card bg-success text-white mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>@ViewBag.TotalMovies</h4>
+                            <p>Tổng phim</p>
                         </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <a href="@Url.Action("UserManagement")" class="btn btn-primary btn-lg w-100">
-                                        <i class="fas fa-users mb-2 d-block"></i>
-                                        Quản Lý Users
-                                    </a>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <a href="@Url.Action("Movies", "Manager")" class="btn btn-secondary btn-lg w-100">
-                                        <i class="fas fa-film mb-2 d-block"></i>
-                                        Quản Lý Phim
-                                    </a>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <a href="@Url.Action("Bookings", "Manager")" class="btn btn-info btn-lg w-100">
-                                        <i class="fas fa-ticket-alt mb-2 d-block"></i>
-                                        Xem Tất Cả Bookings
-                                    </a>
-                                </div>
-                            </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-film fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="@Url.Action("MovieManagement")" class="text-white">
+                        <small>Xem chi tiết <i class="fas fa-angle-right"></i></small>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card bg-warning text-white mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>@ViewBag.TotalBookings</h4>
+                            <p>Tổng đặt vé</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-ticket-alt fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="@Url.Action("BookingManagement")" class="text-white">
+                        <small>Xem chi tiết <i class="fas fa-angle-right"></i></small>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card bg-danger text-white mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>@ViewBag.TotalRevenue.ToString("C0")</h4>
+                            <p>Tổng doanh thu</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-dollar-sign fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <small>Hôm nay: @ViewBag.TodayBookings đặt vé</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu chức năng -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-cogs"></i> Chức năng quản lý</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <a href="@Url.Action("UserManagement")" class="btn btn-outline-primary btn-block">
+                                <i class="fas fa-users"></i><br>
+                                Quản lý người dùng
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="@Url.Action("MovieManagement")" class="btn btn-outline-success btn-block">
+                                <i class="fas fa-film"></i><br>
+                                Quản lý phim
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="@Url.Action("ShowTimeManagement")" class="btn btn-outline-warning btn-block">
+                                <i class="fas fa-calendar-alt"></i><br>
+                                Quản lý lịch chiếu
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="@Url.Action("BookingManagement")" class="btn btn-outline-danger btn-block">
+                                <i class="fas fa-ticket-alt"></i><br>
+                                Quản lý đặt vé
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -79,3 +136,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js"></script>
+}

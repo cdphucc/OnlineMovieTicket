@@ -188,12 +188,28 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Admin/CreateMovie-backup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ3JlYXRlTW92aWUtYmFja3VwLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Admin/CreateMovie.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ3JlYXRlTW92aWUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Admin/EditUser.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdFVzZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Admin/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Admin/MovieManagement-backup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTW92aWVNYW5hZ2VtZW50LWJhY2t1cC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Admin/MovieManagement.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTW92aWVNYW5hZ2VtZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/PROGRAMMING TECHNOLOGY/VS IDE/OnlineMovieTicket/OnlineMovieTicket/Views/Admin/UserManagement.cshtml]

@@ -16,13 +16,13 @@
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"5uzoe74a90"},{"Name":"integrity","Value":"sha256-bdXGuMogHbYmYaSgtCrHGsFuBRfzfjR984Vjgno0iD8="},{"Name":"label","Value":"_content/OnlineMovieTicket/css/site.css"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"4887"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022bdXGuMogHbYmYaSgtCrHGsFuBRfzfjR984Vjgno0iD8=\u0022"},{"Name":"Last-Modified","Value":"Sat, 07 Jun 2025 16:02:24 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"4887"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022bdXGuMogHbYmYaSgtCrHGsFuBRfzfjR984Vjgno0iD8=\u0022"},{"Name":"Last-Modified","Value":"Sat, 07 Jun 2025 18:00:09 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/OnlineMovieTicket/css/site.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-bdXGuMogHbYmYaSgtCrHGsFuBRfzfjR984Vjgno0iD8="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"4887"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022bdXGuMogHbYmYaSgtCrHGsFuBRfzfjR984Vjgno0iD8=\u0022"},{"Name":"Last-Modified","Value":"Sat, 07 Jun 2025 16:02:24 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"4887"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022bdXGuMogHbYmYaSgtCrHGsFuBRfzfjR984Vjgno0iD8=\u0022"},{"Name":"Last-Modified","Value":"Sat, 07 Jun 2025 18:00:09 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/OnlineMovieTicket/favicon.61n19gt1b8.ico">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\favicon.ico'))</AssetFile>
