@@ -1,5 +1,5 @@
-﻿
-@inject SignInManager<IdentityUser> SignInManager
+﻿@using OnlineMovieTicket.Models;
+@inject SignInManager<ApplicationUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
