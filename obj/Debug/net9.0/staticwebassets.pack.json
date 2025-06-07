@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\img1.png"
     },
     {
+      "Id": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\wwwroot\\js\\admin-edit-user.js",
+      "PackagePath": "staticwebassets\\js\\admin-edit-user.js"
+    },
+    {
       "Id": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

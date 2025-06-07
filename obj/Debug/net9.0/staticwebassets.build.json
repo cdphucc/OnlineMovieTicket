@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "lNpfglItJG9DZjhB7SwhHlkYpwD0m/pGkv9BMMAAsyM=",
+  "Hash": "Jwl7eRs6lW/XGBX8/yeqdcS0ddRjOSOFAv9yRS6lz6c=",
   "Source": "OnlineMovieTicket",
   "BasePath": "_content/OnlineMovieTicket",
   "Mode": "Default",
@@ -1359,6 +1359,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\wwwroot\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.js"
+    },
+    {
+      "Identity": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\obj\\Debug\\net9.0\\compressed\\0j71phq2h7-awczqbtcnu.gz",
+      "SourceId": "OnlineMovieTicket",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/OnlineMovieTicket",
+      "RelativePath": "js/admin-edit-user#[.{fingerprint=awczqbtcnu}]?.js.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\wwwroot\\js\\admin-edit-user.js",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "2wz9175upj",
+      "Integrity": "8gr3qRMqp5ZOm4nJ7z5ICSScNJHD3WnrEFc38T8wiqg=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\wwwroot\\js\\admin-edit-user.js"
     },
     {
       "Identity": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\obj\\Debug\\net9.0\\compressed\\0k1i85ntyh-6cfz1n2cew.gz",
@@ -4110,6 +4131,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\img1.png"
+    },
+    {
+      "Identity": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\wwwroot\\js\\admin-edit-user.js",
+      "SourceId": "OnlineMovieTicket",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\wwwroot\\",
+      "BasePath": "_content/OnlineMovieTicket",
+      "RelativePath": "js/admin-edit-user#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "awczqbtcnu",
+      "Integrity": "CmJnbSgIjM5DoSMzV21SeYGzxf6Lk6QtbmzcJEXr8iw=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\admin-edit-user.js"
     },
     {
       "Identity": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\wwwroot\\js\\site.js",
@@ -14703,6 +14745,304 @@
         {
           "Name": "integrity",
           "Value": "sha256-RqPHL3MgFD9CaP73jtCw53rgofEuqC2qfsoLvsyw1nA="
+        }
+      ]
+    },
+    {
+      "Route": "js/admin-edit-user.awczqbtcnu.js",
+      "AssetFile": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\obj\\Debug\\net9.0\\compressed\\0j71phq2h7-awczqbtcnu.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000408663670"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2446"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"8gr3qRMqp5ZOm4nJ7z5ICSScNJHD3WnrEFc38T8wiqg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 07 Jun 2025 07:43:30 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"CmJnbSgIjM5DoSMzV21SeYGzxf6Lk6QtbmzcJEXr8iw=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "awczqbtcnu"
+        },
+        {
+          "Name": "label",
+          "Value": "js/admin-edit-user.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-CmJnbSgIjM5DoSMzV21SeYGzxf6Lk6QtbmzcJEXr8iw="
+        }
+      ]
+    },
+    {
+      "Route": "js/admin-edit-user.awczqbtcnu.js",
+      "AssetFile": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\wwwroot\\js\\admin-edit-user.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11763"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"CmJnbSgIjM5DoSMzV21SeYGzxf6Lk6QtbmzcJEXr8iw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 07 Jun 2025 07:43:30 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "awczqbtcnu"
+        },
+        {
+          "Name": "label",
+          "Value": "js/admin-edit-user.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-CmJnbSgIjM5DoSMzV21SeYGzxf6Lk6QtbmzcJEXr8iw="
+        }
+      ]
+    },
+    {
+      "Route": "js/admin-edit-user.awczqbtcnu.js.gz",
+      "AssetFile": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\obj\\Debug\\net9.0\\compressed\\0j71phq2h7-awczqbtcnu.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2446"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"8gr3qRMqp5ZOm4nJ7z5ICSScNJHD3WnrEFc38T8wiqg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 07 Jun 2025 07:43:30 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "awczqbtcnu"
+        },
+        {
+          "Name": "label",
+          "Value": "js/admin-edit-user.js.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-8gr3qRMqp5ZOm4nJ7z5ICSScNJHD3WnrEFc38T8wiqg="
+        }
+      ]
+    },
+    {
+      "Route": "js/admin-edit-user.js",
+      "AssetFile": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\obj\\Debug\\net9.0\\compressed\\0j71phq2h7-awczqbtcnu.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000408663670"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2446"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"8gr3qRMqp5ZOm4nJ7z5ICSScNJHD3WnrEFc38T8wiqg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 07 Jun 2025 07:43:30 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"CmJnbSgIjM5DoSMzV21SeYGzxf6Lk6QtbmzcJEXr8iw=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-CmJnbSgIjM5DoSMzV21SeYGzxf6Lk6QtbmzcJEXr8iw="
+        }
+      ]
+    },
+    {
+      "Route": "js/admin-edit-user.js",
+      "AssetFile": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\wwwroot\\js\\admin-edit-user.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11763"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"CmJnbSgIjM5DoSMzV21SeYGzxf6Lk6QtbmzcJEXr8iw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 07 Jun 2025 07:43:30 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-CmJnbSgIjM5DoSMzV21SeYGzxf6Lk6QtbmzcJEXr8iw="
+        }
+      ]
+    },
+    {
+      "Route": "js/admin-edit-user.js.gz",
+      "AssetFile": "D:\\PROGRAMMING TECHNOLOGY\\VS IDE\\OnlineMovieTicket\\OnlineMovieTicket\\obj\\Debug\\net9.0\\compressed\\0j71phq2h7-awczqbtcnu.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2446"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"8gr3qRMqp5ZOm4nJ7z5ICSScNJHD3WnrEFc38T8wiqg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 07 Jun 2025 07:43:30 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-8gr3qRMqp5ZOm4nJ7z5ICSScNJHD3WnrEFc38T8wiqg="
         }
       ]
     },

@@ -48,6 +48,18 @@
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"y9adi7y1ow"},{"Name":"integrity","Value":"sha256-RqPHL3MgFD9CaP73jtCw53rgofEuqC2qfsoLvsyw1nA="},{"Name":"label","Value":"_content/OnlineMovieTicket/img1.png"}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"175184"},{"Name":"Content-Type","Value":"image/png"},{"Name":"ETag","Value":"\u0022RqPHL3MgFD9CaP73jtCw53rgofEuqC2qfsoLvsyw1nA=\u0022"},{"Name":"Last-Modified","Value":"Fri, 06 Jun 2025 10:29:35 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/OnlineMovieTicket/js/admin-edit-user.awczqbtcnu.js">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\admin-edit-user.js'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"awczqbtcnu"},{"Name":"integrity","Value":"sha256-CmJnbSgIjM5DoSMzV21SeYGzxf6Lk6QtbmzcJEXr8iw="},{"Name":"label","Value":"_content/OnlineMovieTicket/js/admin-edit-user.js"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"11763"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022CmJnbSgIjM5DoSMzV21SeYGzxf6Lk6QtbmzcJEXr8iw=\u0022"},{"Name":"Last-Modified","Value":"Sat, 07 Jun 2025 07:43:30 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/OnlineMovieTicket/js/admin-edit-user.js">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\admin-edit-user.js'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-CmJnbSgIjM5DoSMzV21SeYGzxf6Lk6QtbmzcJEXr8iw="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"11763"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022CmJnbSgIjM5DoSMzV21SeYGzxf6Lk6QtbmzcJEXr8iw=\u0022"},{"Name":"Last-Modified","Value":"Sat, 07 Jun 2025 07:43:30 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/OnlineMovieTicket/js/site.3r8b2a0bt1.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\site.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>

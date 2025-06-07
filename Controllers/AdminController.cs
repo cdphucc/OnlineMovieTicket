@@ -178,8 +178,6 @@ namespace OnlineMovieTicket.Controllers
                 TempData["ErrorMessage"] = "You cannot delete your own account.";
                 return RedirectToAction(nameof(UserManagement));
             }
-
-            // Prevent deleting other admins (optional security measure)
             if (user.Role == UserRole.Admin)
             {
                 TempData["ErrorMessage"] = "Cannot delete admin users for security reasons.";
@@ -200,6 +198,4 @@ namespace OnlineMovieTicket.Controllers
             return RedirectToAction(nameof(UserManagement));
         }
     }
-
-    // Remove the EditUserViewModel class from here since it's now in ViewModels folder
 }

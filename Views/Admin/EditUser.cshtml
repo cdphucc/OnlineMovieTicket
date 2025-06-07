@@ -3,41 +3,146 @@
     ViewData["Title"] = "Edit User";
 }
 
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="mb-0">
-                        <i class="fas fa-user-edit"></i> Edit User
-                    </h4>
+        <div class="col-12">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-gradient-primary text-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h4 class="mb-1">
+                                <i class="fas fa-user-edit me-2"></i>Edit User Profile
+                            </h4>
+                            <small class="text-light opacity-75">Comprehensive user management and permissions</small>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-light text-dark fs-6">ID: @Model.Id</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <form asp-action="EditUser" method="post">
+
+                <div class="card-body p-4">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>@TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <form asp-action="EditUser" method="post" id="editUserForm" novalidate>
+                        @Html.AntiForgeryToken()
                         <input type="hidden" asp-for="Id" />
                         <input type="hidden" asp-for="CreatedAt" />
-                        <input type="hidden" asp-for="UpdatedAt" />
-                        
+                        <input type="hidden" asp-for="CreatedBy" />
+
                         <!-- Personal Information Section -->
-                        <div class="card mb-4">
-                            <div class="card-header bg-light">
-                                <h5 class="mb-0">Personal Information</h5>
+                        <div class="card mb-4 border-0 shadow-sm">
+                            <div class="card-header bg-light border-bottom-2">
+                                <h5 class="mb-0 text-primary">
+                                    <i class="fas fa-user me-2"></i>Personal Information
+                                </h5>
+                                <small class="text-muted">Basic user details and contact information</small>
                             </div>
                             <div class="card-body">
-                                <div class="row">
+                                <div class="row g-3">
                                     <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label asp-for="FullName" class="form-label">Full Name <span class="text-danger">*</span></label>
-                                            <input asp-for="FullName" class="form-control" />
-                                            <span asp-validation-for="FullName" class="text-danger"></span>
+                                        <div class="form-group">
+                                            <label asp-for="FullName" class="form-label fw-semibold">
+                                                <i class="fas fa-id-card me-1"></i>Full Name 
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input asp-for="FullName" class="form-control form-control-lg" 
+                                                   placeholder="Enter full name" maxlength="100" />
+                                            <span asp-validation-for="FullName" class="text-danger small"></span>
+                                            <div class="form-text">
+                                                <i class="fas fa-info-circle me-1"></i>Display name for the user
+                                            </div>
                                         </div>
                                     </div>
+
                                     <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label asp-for="Email" class="form-label">Email <span class="text-danger">*</span></label>
-                                            <input asp-for="Email" class="form-control" />
-                                            <span asp-validation-for="Email" class="text-danger"></span>
-                                            <small class="form-text text-muted">Changing email will also update the username.</small>
+                                        <div class="form-group">
+                                            <label asp-for="Email" class="form-label fw-semibold">
+                                                <i class="fas fa-envelope me-1"></i>Email Address 
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input asp-for="Email" type="email" class="form-control form-control-lg" 
+                                                   placeholder="Enter email address" maxlength="256" />
+                                            <span asp-validation-for="Email" class="text-danger small"></span>
+                                            <div class="form-text">
+                                                <i class="fas fa-sync-alt me-1"></i>Changing email will update username automatically
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="PhoneNumber" class="form-label fw-semibold">
+                                                <i class="fas fa-phone me-1"></i>Phone Number
+                                            </label>
+                                            <input asp-for="PhoneNumber" type="tel" class="form-control form-control-lg" 
+                                                   placeholder="(555) 123-4567" maxlength="20" />
+                                            <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                                            <div class="form-text">
+                                                <i class="fas fa-magic me-1"></i>Auto-formatted as you type
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="DateOfBirth" class="form-label fw-semibold">
+                                                <i class="fas fa-birthday-cake me-1"></i>Date of Birth 
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input asp-for="DateOfBirth" type="date" class="form-control form-control-lg" />
+                                            <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
+                                            <div class="form-text">
+                                                <i class="fas fa-calendar-alt me-1"></i>Must be between 13-120 years old
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Gender" class="form-label fw-semibold">
+                                                <i class="fas fa-venus-mars me-1"></i>Gender 
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <select asp-for="Gender" class="form-select form-select-lg">
+                                                <option value="">Select Gender</option>
+                                                @if (ViewBag.Genders != null)
+                                                {
+                                                    @foreach (var gender in ViewBag.Genders as List<string>)
+                                                    {
+                                                        <option value="@gender">@gender</option>
+                                                    }
+                                                }
+                                            </select>
+                                            <span asp-validation-for="Gender" class="text-danger small"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Address" class="form-label fw-semibold">
+                                                <i class="fas fa-map-marker-alt me-1"></i>Address
+                                            </label>
+                                            <textarea asp-for="Address" class="form-control" rows="3" 
+                                                      placeholder="Enter full address" maxlength="500"></textarea>
+                                            <span asp-validation-for="Address" class="text-danger small"></span>
+                                            <div class="form-text">
+                                                <i class="fas fa-home me-1"></i>Complete residential address
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -45,68 +150,172 @@
                         </div>
 
                         <!-- Role & Security Section -->
-                        <div class="card mb-4">
-                            <div class="card-header bg-light">
-                                <h5 class="mb-0">Role & Security</h5>
+                        <div class="card mb-4 border-0 shadow-sm">
+                            <div class="card-header bg-warning bg-opacity-25 border-bottom-2">
+                                <h5 class="mb-0 text-warning-emphasis">
+                                    <i class="fas fa-shield-alt me-2"></i>Role & Security Settings
+                                </h5>
+                                <small class="text-muted">User permissions and account security</small>
                             </div>
                             <div class="card-body">
-                                <div class="form-group mb-3">
-                                    <label asp-for="Role" class="form-label">User Role <span class="text-danger">*</span></label>
-                                    <select asp-for="Role" class="form-select">
-                                        @foreach (var role in ViewBag.Roles as List<OnlineMovieTicket.Models.UserRole>)
-                                        {
-                                            <option value="@role">@role</option>
-                                        }
-                                    </select>
-                                    <span asp-validation-for="Role" class="text-danger"></span>
-                                    <small class="form-text text-muted">
-                                        <strong>Warning:</strong> Changing user roles affects their permissions and access levels.
-                                    </small>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Role" class="form-label fw-semibold">
+                                                <i class="fas fa-user-tag me-1"></i>User Role 
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <select asp-for="Role" class="form-select form-select-lg" id="roleSelect">
+                                                @if (ViewBag.Roles != null)
+                                                {
+                                                    @foreach (var role in ViewBag.Roles as List<OnlineMovieTicket.Models.UserRole>)
+                                                    {
+                                                        <option value="@role">@role</option>
+                                                    }
+                                                }
+                                            </select>
+                                            <span asp-validation-for="Role" class="text-danger small"></span>
+                                            
+                                            <div class="alert alert-warning mt-2 d-none" id="roleWarning">
+                                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                                <strong>Warning:</strong> Changing user roles affects their permissions and access levels.
+                                                <ul class="mb-0 mt-2 small">
+                                                    <li><strong>Admin:</strong> Full system access</li>
+                                                    <li><strong>Staff:</strong> Limited management access</li>
+                                                    <li><strong>Customer:</strong> Basic user access</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="EmailConfirmed" class="form-label fw-semibold">
+                                                <i class="fas fa-envelope-check me-1"></i>Email Verification Status
+                                            </label>
+                                            <div class="form-check form-switch form-check-lg">
+                                                <input asp-for="EmailConfirmed" class="form-check-input" type="checkbox" 
+                                                       id="emailConfirmedSwitch" style="transform: scale(1.2);">
+                                                <label class="form-check-label ms-2" for="emailConfirmedSwitch">
+                                                    <span id="emailStatusText">
+                                                        @(Model.EmailConfirmed ? "Email Verified" : "Email Not Verified")
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <div class="form-text">
+                                                <i class="fas fa-shield-check me-1"></i>Controls email verification status and related permissions
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- System Information Section (Read-only) -->
-                        <div class="card mb-4">
-                            <div class="card-header bg-light">
-                                <h5 class="mb-0">System Information (Read-only)</h5>
+                        <!-- System Information Section -->
+                        <div class="card mb-4 border-0 shadow-sm">
+                            <div class="card-header bg-info bg-opacity-25 border-bottom-2">
+                                <h5 class="mb-0 text-info-emphasis">
+                                    <i class="fas fa-database me-2"></i>System Information
+                                </h5>
+                                <small class="text-muted">Read-only system data and audit trail</small>
                             </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label class="form-label">Created At</label>
-                                            <input value="@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")" class="form-control" readonly />
+                            <div class="card-body bg-light">
+                                <div class="row g-3">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label fw-semibold">
+                                                <i class="fas fa-fingerprint me-1"></i>User ID
+                                            </label>
+                                            <input value="@Model.Id" class="form-control bg-white" readonly />
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label class="form-label">Last Updated At</label>
-                                            <input value="@(Model.UpdatedAt?.ToString("yyyy-MM-dd HH:mm:ss") ?? "Never")" class="form-control" readonly />
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="form-group mb-3">
-                                    <label class="form-label">User ID</label>
-                                    <input value="@Model.Id" class="form-control" readonly />
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label fw-semibold">
+                                                <i class="fas fa-plus-circle me-1"></i>Created At
+                                            </label>
+                                            <input value="@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")" 
+                                                   class="form-control bg-white" readonly />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label fw-semibold">
+                                                <i class="fas fa-edit me-1"></i>Last Updated
+                                            </label>
+                                            <input value="@(Model.UpdatedAt?.ToString("yyyy-MM-dd HH:mm:ss") ?? "Never")" 
+                                                   class="form-control bg-white" readonly />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label fw-semibold">
+                                                <i class="fas fa-clock me-1"></i>Current Time
+                                            </label>
+                                            <input value="@DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")" 
+                                                   class="form-control bg-white" readonly />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label fw-semibold">
+                                                <i class="fas fa-user-plus me-1"></i>Created By
+                                            </label>
+                                            <input value="@(Model.CreatedBy ?? "System")" 
+                                                   class="form-control bg-white" readonly />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label fw-semibold">
+                                                <i class="fas fa-user-edit me-1"></i>Last Updated By
+                                            </label>
+                                            <input value="@(Model.UpdatedBy ?? "N/A")" 
+                                                   class="form-control bg-white" readonly />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Action Buttons -->
-                        <div class="card">
+                        <div class="card border-0 shadow-sm">
                             <div class="card-body">
-                                <div class="d-flex gap-2">
-                                    <button type="submit" class="btn btn-success">
-                                        <i class="fas fa-save"></i> Save Changes
-                                    </button>
-                                    <a href="@Url.Action("UserManagement")" class="btn btn-secondary">
-                                        <i class="fas fa-arrow-left"></i> Back to User Management
-                                    </a>
-                                    <button type="button" class="btn btn-warning" onclick="resetForm()">
-                                        <i class="fas fa-undo"></i> Reset Changes
-                                    </button>
+                                <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <button type="submit" class="btn btn-success btn-lg px-4" id="saveBtn">
+                                            <i class="fas fa-save me-2"></i>Save All Changes
+                                        </button>
+                                        <button type="button" class="btn btn-warning btn-lg px-4" onclick="resetForm()">
+                                            <i class="fas fa-undo me-2"></i>Reset Changes
+                                        </button>
+                                        <button type="button" class="btn btn-info btn-lg px-4" onclick="previewChanges()">
+                                            <i class="fas fa-eye me-2"></i>Preview Changes
+                                        </button>
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <a href="@Url.Action("UserManagement")" class="btn btn-secondary btn-lg px-4">
+                                            <i class="fas fa-arrow-left me-2"></i>Back to Users
+                                        </a>
+                                        <button type="button" class="btn btn-danger btn-lg px-4" onclick="confirmDelete()">
+                                            <i class="fas fa-trash me-2"></i>Delete User
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Changes Summary -->
+                                <div class="mt-3">
+                                    <div class="alert alert-info d-none" id="changesSummary">
+                                        <h6 class="alert-heading">
+                                            <i class="fas fa-info-circle me-2"></i>Pending Changes:
+                                        </h6>
+                                        <ul class="mb-0" id="changedFieldsList"></ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -117,62 +326,150 @@
     </div>
 </div>
 
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Confirm User Deletion
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="text-center mb-3">
+                    <i class="fas fa-user-times text-danger" style="font-size: 3rem;"></i>
+                </div>
+                <p class="text-center mb-3">Are you sure you want to delete user:</p>
+                <div class="alert alert-light text-center">
+                    <strong>@Model.FullName</strong><br>
+                    <small class="text-muted">@Model.Email</small>
+                </div>
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Warning:</strong> This action cannot be undone. All user data will be permanently removed.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Cancel
+                </button>
+                <form asp-action="DeleteUser" method="post" style="display: inline;">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i>Delete Permanently
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Preview Changes Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-eye me-2"></i>Preview Changes
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="previewContent">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" onclick="$('#editUserForm').submit()">
+                    <i class="fas fa-save me-1"></i>Apply Changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    
+    <script src="~/js/admin-edit-user.js"></script>
     <script>
-        $(document).ready(function() {
-            // Store original values for reset functionality
-            var originalValues = {};
-            $('input, select, textarea').each(function() {
-                var element = $(this);
-                if (!element.prop('readonly') && !element.is(':hidden')) {
-                    originalValues[element.attr('name')] = element.val();
-                }
-            });
-
-            // Confirm form submission
-            $('form').on('submit', function(e) {
-                if (!confirm('Are you sure you want to save these changes?')) {
-                    e.preventDefault();
-                    return false;
-                }
-            });
-
-            // Reset form function
-            window.resetForm = function() {
-                if (confirm('Are you sure you want to reset all changes?')) {
-                    for (var name in originalValues) {
-                        $('[name="' + name + '"]').val(originalValues[name]);
-                    }
-                }
-            };
-
-            // Highlight changed fields
-            $('input, select, textarea').not(':hidden, [readonly]').on('change', function() {
-                var element = $(this);
-                var name = element.attr('name');
-                if (originalValues[name] && originalValues[name] !== element.val()) {
-                    element.addClass('border-warning');
-                } else {
-                    element.removeClass('border-warning');
-                }
-            });
-
-            // Email validation
-            $('#Email').on('blur', function() {
-                var email = $(this).val();
-                if (email && !isValidEmail(email)) {
-                    $(this).addClass('border-danger');
-                } else {
-                    $(this).removeClass('border-danger');
-                }
-            });
-
-            function isValidEmail(email) {
-                var emailRegex = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
-                return emailRegex.test(email);
-            }
-        });
+        // Pass data from Razor to JavaScript
+        window.userEditData = {
+            originalRole: '@Model.Role',
+            emailConfirmedText: '@(Model.EmailConfirmed ? "Email Verified" : "Email Not Verified")'
+        };
     </script>
+
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        }
+        
+        .border-bottom-2 {
+            border-bottom: 2px solid rgba(0,0,0,0.1) !important;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+        
+        .border-warning {
+            border-color: #ffc107 !important;
+        }
+        
+        .border-danger {
+            border-color: #dc3545 !important;
+        }
+        
+        .card {
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .form-control-lg, .form-select-lg {
+            font-size: 1rem;
+            padding: 0.875rem 1rem;
+            border-radius: 10px;
+        }
+        
+        .btn-lg {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 10px;
+        }
+
+        .shadow-lg {
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+        }
+        
+        .shadow-sm {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+        }
+        
+        .form-check-input:checked {
+            background-color: #198754;
+            border-color: #198754;
+        }
+        
+        .bg-opacity-25 {
+            --bs-bg-opacity: 0.25;
+        }
+        
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .modal-content {
+            border-radius: 15px;
+        }
+        
+        .alert {
+            border-radius: 10px;
+        }
+    </style>
 }

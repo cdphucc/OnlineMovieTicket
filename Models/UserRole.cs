@@ -4,6 +4,7 @@
     {
         Admin = 1,
         Manager = 2,
-        User = 3
+        User = 3,
+        Customer = 4
     }
 }
