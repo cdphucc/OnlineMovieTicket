@@ -443,3 +443,5 @@ D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\n
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\net9.0\QRCoder.dll
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\compressed\0j71phq2h7-awczqbtcnu.gz
 D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\net9.0\SendGrid.dll
+D:\PROGRAMMING TECHNOLOGY\VS IDE\OnlineMovieTicket\OnlineMovieTicket\bin\Debug\net9.0\StarkbankEcdsa.dll

@@ -16,26 +16,34 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => 
 {
-    options.SignIn.RequireConfirmedAccount = true;
+    options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredLength = 8;
+
+    //
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
 })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 //Configrue Authorization Policies
 builder.Services.ConfigureAuthorizationPolicies();
+//
+var emailProvider = builder.Configuration["Email:Provider"];
+builder.Services.AddScoped<IEmailSender, GmailEmailService>();
+builder.Services.AddScoped<IEmailService, GmailEmailService>();
+     
 // Add custom services
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<IVietQRService, VietQRService>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-builder.Services.AddTransient<IEmailSender, DummyEmailSender>();
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

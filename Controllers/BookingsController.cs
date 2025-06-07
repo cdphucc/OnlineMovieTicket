@@ -17,14 +17,16 @@ namespace OnlineMovieTicket.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IVietQRService _vietQrService;
         private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
 
-        public BookingsController(ApplicationDbContext context, IVietQRService vietQrService, IConfiguration configuration)
+        public BookingsController(ApplicationDbContext context, IVietQRService vietQrService, IConfiguration configuration, IEmailService emailService)
         {
             _context = context;
             _vietQrService = vietQrService;
             _configuration = configuration;
+            _emailService = emailService;
         }
-        
+
         [HttpGet]
         public IActionResult SelectSeat(int showTimeId)
         {
@@ -163,6 +165,7 @@ namespace OnlineMovieTicket.Controllers
             try
             {
                 var booking = _context.Bookings
+                    .Include(b => b.User)
                     .FirstOrDefault(b => b.Id == bookingId && b.Status == "Pending");
                 if (booking == null)
                 {
@@ -183,6 +186,20 @@ namespace OnlineMovieTicket.Controllers
                 booking.Status = "Completed"; // Cập nhật trạng thái đặt vé
                 _context.Payments.Add(payment);
                 _context.SaveChanges();
+                try
+                {
+                    var user = booking.User.Email;
+
+                    if (!string.IsNullOrEmpty(booking.User.Email))
+                    {
+                       _emailService.SendInvoiceEmailAsync(booking.User.Email, booking.User.FullName ?? booking.User.Email, booking);
+                    }
+                }
+                catch (Exception emailEx)
+                {
+                    // Log email error but don't fail the payment
+                    Console.WriteLine($"Error sending invoice email: {emailEx.Message}");
+                }
                 TempData["SuccessMessage"] = "Thanh toán thành công!";
                 return RedirectToAction("Invoice", new { bookingId = booking.Id });
             }

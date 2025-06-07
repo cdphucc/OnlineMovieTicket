@@ -197,5 +197,32 @@ namespace OnlineMovieTicket.Controllers
 
             return RedirectToAction(nameof(UserManagement));
         }
-    }
+    
+    [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Tạo mật khẩu mới ngẫu nhiên
+            var newPassword = Guid.NewGuid().ToString().Substring(0, 8);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+
+            if (result.Succeeded)
+            {
+                TempData["ResetPassword"] = $"Mật khẩu mới: {newPassword}";
+                // (Tùy chọn) Gửi mail cho user tại đây
+            }
+            else
+            {
+                TempData["ResetPassword"] = "Đặt lại mật khẩu thất bại!";
+            }
+            return RedirectToAction("EditUser", new { id });
+        }
+    } 
 }
