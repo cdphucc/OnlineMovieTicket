@@ -1,0 +1,239 @@
+﻿@model OnlineMovieTicket.Models.Booking
+@{
+    ViewData["Title"] = "Chi tiết giao dịch";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">
+                            <i class="fas fa-ticket-alt"></i> Chi tiết giao dịch #@Model.Id
+                        </h4>
+                        @{
+                            var statusClass = Model.Status switch
+                            {
+                                "Completed" => "bg-success",
+                                "Pending" => "bg-warning text-dark",
+                                "Cancelled" => "bg-danger",
+                                _ => "bg-secondary"
+                            };
+                            var statusText = Model.Status switch
+                            {
+                                "Completed" => "Đã hoàn thành",
+                                "Pending" => "Chờ thanh toán",
+                                "Cancelled" => "Đã hủy",
+                                _ => Model.Status
+                            };
+                        }
+                        <span class="badge @statusClass fs-6">
+                            @statusText
+                        </span>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    @if (Model.BookingDetails.Any())
+                    {
+                        var firstDetail = Model.BookingDetails.First();
+
+                        <!-- Movie Information -->
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <h5 class="text-primary mb-3">
+                                    <i class="fas fa-film"></i> Thông tin phim
+                                </h5>
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6 class="fw-bold">@firstDetail.ShowTime.Movie.Title</h6>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p class="mb-1">
+                                                    <i class="fas fa-calendar"></i>
+                                                    <strong>Ngày chiếu:</strong> @firstDetail.ShowTime.StartTime.ToString("dd/MM/yyyy")
+                                                </p>
+                                                <p class="mb-1">
+                                                    <i class="fas fa-clock"></i>
+                                                    <strong>Giờ chiếu:</strong> @firstDetail.ShowTime.StartTime.ToString("HH:mm")
+                                                </p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p class="mb-1">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                    <strong>Phòng:</strong> @firstDetail.ShowTime.Room.Name
+                                                </p>
+                                                <p class="mb-1">
+                                                    <i class="fas fa-money-bill-wave"></i>
+                                                    <strong>Giá vé:</strong> @firstDetail.ShowTime.Price.ToString("N0") VND
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Seat Information -->
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <h5 class="text-primary mb-3">
+                                    <i class="fas fa-chair"></i> Thông tin ghế
+                                </h5>
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            @foreach (var detail in Model.BookingDetails)
+                                            {
+                                                <div class="col-md-3 mb-2">
+                                                    <div class="text-center p-2 bg-white rounded">
+                                                        <i class="fas fa-chair text-primary"></i>
+                                                        <div class="fw-bold">@detail.Seat.Row@detail.Seat.Column</div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="mt-2">
+                                            <strong>Số lượng ghế:</strong> @Model.BookingDetails.Count
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Booking Information -->
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <h5 class="text-primary mb-3">
+                                <i class="fas fa-info-circle"></i> Thông tin đặt vé
+                            </h5>
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="mb-2">
+                                                <strong>Mã đặt vé:</strong> #@Model.Id
+                                            </p>
+                                            <p class="mb-2">
+                                                <strong>Thời gian đặt:</strong> @Model.BookingTime.ToString("dd/MM/yyyy HH:mm")
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="mb-2">
+                                                <strong>Trạng thái:</strong>
+                                                <span class="badge @statusClass">
+                                                    @statusText
+                                                </span>
+                                            </p>
+                                            <p class="mb-2">
+                                                <strong>Tổng tiền:</strong>
+                                                <span class="h5 text-primary">@Model.TotalAmount.ToString("N0") VND</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Information -->
+                    @if (Model.Payment != null)
+                    {
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <h5 class="text-primary mb-3">
+                                    <i class="fas fa-credit-card"></i> Thông tin thanh toán
+                                </h5>
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p class="mb-2">
+                                                    <strong>Phương thức:</strong> @Model.Payment.PaymentMethod
+                                                </p>
+                                                <p class="mb-2">
+                                                    <strong>Số tiền:</strong> @Model.Payment.Amount.ToString("N0") VND
+                                                </p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p class="mb-2">
+                                                    <strong>Trạng thái:</strong> @Model.Payment.Status
+                                                </p>
+                                                <p class="mb-2">
+                                                    <strong>Thời gian:</strong> @Model.Payment.PaymentDate.ToString("dd/MM/yyyy HH:mm")
+                                                </p>
+                                            </div>
+                                        </div>
+                                        @if (!string.IsNullOrEmpty(Model.Payment.TransactionId))
+                                        {
+                                            <p class="mb-0">
+                                                <strong>Mã giao dịch:</strong> @Model.Payment.TransactionId
+                                            </p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between">
+                        <a href="@Url.Action("Index")" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Quay lại
+                        </a>
+
+                        <div>
+                            @if (Model.Status == "Completed")
+                            {
+                                <a href="@Url.Action("ExportToPdf", new { id = Model.Id })"
+                                   class="btn btn-success">
+                                    <i class="fas fa-download"></i> Tải vé PDF
+                                </a>
+                            }
+
+                            @if (Model.Status == "Pending")
+                            {
+                                <button type="button"
+                                        class="btn btn-danger"
+                                        onclick="cancelBooking(@Model.Id)">
+                                    <i class="fas fa-times"></i> Hủy đặt vé
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function cancelBooking(bookingId) {
+            if (confirm('Bạn có chắc chắn muốn hủy booking này?')) {
+                $.ajax({
+                    url: '@Url.Action("CancelBooking")',
+                    type: 'POST',
+                    data: {
+                        id: bookingId,
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            alert(response.message);
+                            window.location.href = '@Url.Action("Index")';
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function() {
+                        alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                    }
+                });
+            }
+        }
+    </script>
+}

@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.WebUtilities;
 using OnlineMovieTicket.Models;
 using OnlineMovieTicket.Services;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 using System.Text.Encodings.Web;
 
 namespace OnlineMovieTicket.Areas.Identity.Pages.Account
@@ -43,6 +45,9 @@ namespace OnlineMovieTicket.Areas.Identity.Pages.Account
                 }
 
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                // Encode the code để tránh lỗi URL
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
                 var callbackUrl = Url.Page(
                     "/Account/ResetPassword",
                     pageHandler: null,

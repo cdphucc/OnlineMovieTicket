@@ -11,14 +11,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using OnlineMovieTicket.Models; // Thêm dòng này
 
 namespace OnlineMovieTicket.Areas.Identity.Pages.Account
 {
     public class ResetPasswordModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager; // Thay đổi từ IdentityUser thành ApplicationUser
 
-        public ResetPasswordModel(UserManager<IdentityUser> userManager)
+        public ResetPasswordModel(UserManager<ApplicationUser> userManager) // Thay đổi từ IdentityUser thành ApplicationUser
         {
             _userManager = userManager;
         }
@@ -71,7 +72,7 @@ namespace OnlineMovieTicket.Areas.Identity.Pages.Account
 
         }
 
-        public IActionResult OnGet(string code = null)
+        public IActionResult OnGet(string code = null, string email = null) // Thêm email parameter
         {
             if (code == null)
             {
@@ -81,7 +82,8 @@ namespace OnlineMovieTicket.Areas.Identity.Pages.Account
             {
                 Input = new InputModel
                 {
-                    Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code))
+                    Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code)),
+                    Email = email // Set email từ parameter
                 };
                 return Page();
             }
