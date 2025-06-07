@@ -1,4 +1,8 @@
-﻿namespace OnlineMovieTicket.Models
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace OnlineMovieTicket.Models
 {
     public class Movie
     {
@@ -15,6 +19,11 @@
         public string Cast { get; set; } // Comma-separated list of actors
         public string TrailerUrl { get; set; } // URL to the movie trailer
         public string Status { get; set; } // e.g., "Now Showing", "Coming Soon", "Archived"
+
+        // Add the missing timestamp properties
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+
         // Navigation
         public ICollection<ShowTime> ShowTimes { get; set; }
     }
