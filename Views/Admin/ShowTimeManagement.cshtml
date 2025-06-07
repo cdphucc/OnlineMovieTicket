@@ -1,0 +1,251 @@
+﻿@model IEnumerable<OnlineMovieTicket.Models.ShowTime>
+
+@{
+    ViewData["Title"] = "Quản lý suất chiếu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-4">
+                <i class="fas fa-clock"></i> Quản lý suất chiếu
+                <a href="@Url.Action("CreateShowTime")" class="btn btn-success float-right">
+                    <i class="fas fa-plus"></i> Thêm suất chiếu
+                </a>
+            </h2>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+        </div>
+    }
+
+    <!-- Filters -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Lọc theo phim:</label>
+                    <select class="form-control" id="movieFilter">
+                        <option value="">Tất cả phim</option>
+                        @if (ViewBag.Movies != null)
+                        {
+                            @foreach (var movie in ViewBag.Movies as IEnumerable<OnlineMovieTicket.Models.Movie>)
+                            {
+                                <option value="@movie.Title">@movie.Title</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label>Lọc theo phòng:</label>
+                    <select class="form-control" id="roomFilter">
+                        <option value="">Tất cả phòng</option>
+                        @if (ViewBag.Rooms != null)
+                        {
+                            @foreach (var room in ViewBag.Rooms as IEnumerable<OnlineMovieTicket.Models.Room>)
+                            {
+                                <option value="@room.Name">@room.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label>Từ ngày:</label>
+                    <input type="date" class="form-control" id="dateFromFilter" />
+                </div>
+                <div class="col-md-3">
+                    <label>Đến ngày:</label>
+                    <input type="date" class="form-control" id="dateToFilter" />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-primary" onclick="applyFilters()">
+                        <i class="fas fa-search"></i> Lọc
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="clearFilters()">
+                        <i class="fas fa-times"></i> Xóa bộ lọc
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" id="showTimesTable">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Phim</th>
+                            <th>Phòng chiếu</th>
+                            <th>Ngày giờ chiếu</th>
+                            <th>Giá vé</th>
+                            <th>Trạng thái</th>
+                            <th>Đã đặt/Tổng</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var showTime in Model)
+                        {
+                            <tr>
+                                <td>@showTime.Id</td>
+                                <td>
+                                    <strong>@showTime.Movie.Title</strong>
+                                    <br>
+                                    <small class="text-muted">@showTime.Movie.Genre - @showTime.Movie.Duration phút</small>
+                                </td>
+                                <td>
+                                    <span class="badge badge-secondary">@showTime.Room.Name</span>
+                                </td>
+                                <td>
+                                    @showTime.StartTime.ToString("dd/MM/yyyy")
+                                    <br>
+                                    <strong>@showTime.StartTime.ToString("HH:mm")</strong>
+                                </td>
+                                <td>
+                                    <strong>@showTime.Price.ToString("N0") VNĐ</strong>
+                                </td>
+                                <td>
+                                    @switch (showTime.Status)
+                                    {
+                                        case "Available":
+                                            <span class="badge badge-success">Khả dụng</span>
+                                            break;
+                                        case "Sold Out":
+                                            <span class="badge badge-warning">Hết vé</span>
+                                            break;
+                                        case "Expired":
+                                            <span class="badge badge-danger">Đã qua</span>
+                                            break;
+                                        default:
+                                            <span class="badge badge-secondary">@showTime.Status</span>
+                                            break;
+                                    }
+                                </td>
+                                <td>
+                                    @{
+                                        var bookedCount = showTime.BookingDetails?.Where(bd => bd.Booking.Status == "Completed").Count() ?? 0;
+                                        var totalSeats = showTime.Room.Seats?.Count() ?? 0;
+                                        var percentage = totalSeats > 0 ? (decimal)bookedCount / totalSeats * 100 : 0;
+                                    }
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar @(percentage >= 80 ? "bg-danger" : percentage >= 50 ? "bg-warning" : "bg-success")"
+                                             role="progressbar" style="width: @percentage%">
+                                            @bookedCount/@totalSeats
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="@Url.Action("EditShowTime", new { id = showTime.Id })"
+                                           class="btn btn-sm btn-warning" title="Sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-danger"
+                                                onclick="confirmDeleteShowTime(@showTime.Id)" title="Xóa">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-info"
+                                                onclick="viewBookings(@showTime.Id)" title="Xem đặt vé">
+                                            <i class="fas fa-users"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#showTimesTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Vietnamese.json"
+                },
+                "order": [[3, "desc"]],
+                "pageLength": 25
+            });
+        });
+
+        function applyFilters() {
+            var table = $('#showTimesTable').DataTable();
+            var movieFilter = $('#movieFilter').val();
+            var roomFilter = $('#roomFilter').val();
+            var dateFrom = $('#dateFromFilter').val();
+            var dateTo = $('#dateToFilter').val();
+
+            // Reset all filters
+            table.columns().search('').draw();
+
+            // Apply filters
+            if (movieFilter) {
+                table.column(1).search(movieFilter);
+            }
+            if (roomFilter) {
+                table.column(2).search(roomFilter);
+            }
+            // Date filtering would need custom implementation
+
+            table.draw();
+        }
+
+        function clearFilters() {
+            $('#movieFilter, #roomFilter, #dateFromFilter, #dateToFilter').val('');
+            $('#showTimesTable').DataTable().columns().search('').draw();
+        }
+
+        function confirmDeleteShowTime(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa suất chiếu này?\nLưu ý: Sẽ không thể khôi phục sau khi xóa!')) {
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '@Url.Action("DeleteShowTime")';
+
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'id';
+                input.value = id;
+                form.appendChild(input);
+
+                var token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                var tokenInput = document.createElement('input');
+                tokenInput.type = 'hidden';
+                tokenInput.name = '__RequestVerificationToken';
+                tokenInput.value = token;
+                form.appendChild(tokenInput);
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+        function viewBookings(showTimeId) {
+            window.location.href = '@Url.Action("BookingManagement")' + '?showTimeId=' + showTimeId;
+        }
+    </script>
+}

@@ -1,0 +1,340 @@
+﻿@model IEnumerable<OnlineMovieTicket.Models.Booking>
+
+@{
+    ViewData["Title"] = "Quản lý đặt vé";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-4">
+                <i class="fas fa-ticket-alt"></i> Quản lý đặt vé
+            </h2>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+        </div>
+    }
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>@Model.Count()</h4>
+                            <p>Tổng đặt vé</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-ticket-alt fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>@Model.Count(b => b.Status == "Completed")</h4>
+                            <p>Đã hoàn thành</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>@Model.Count(b => b.Status == "Pending")</h4>
+                            <p>Chờ thanh toán</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-clock fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>@Model.Where(b => b.Status == "Completed").Sum(b => b.TotalAmount).ToString("N0")</h4>
+                            <p>Tổng doanh thu (VNĐ)</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-dollar-sign fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Trạng thái:</label>
+                    <select class="form-control" id="statusFilter">
+                        <option value="">Tất cả</option>
+                        <option value="Completed">Đã hoàn thành</option>
+                        <option value="Pending">Chờ thanh toán</option>
+                        <option value="Cancelled">Đã hủy</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label>Từ ngày:</label>
+                    <input type="date" class="form-control" id="dateFromFilter" />
+                </div>
+                <div class="col-md-3">
+                    <label>Đến ngày:</label>
+                    <input type="date" class="form-control" id="dateToFilter" />
+                </div>
+                <div class="col-md-3">
+                    <label>Tìm kiếm:</label>
+                    <input type="text" class="form-control" id="searchFilter" placeholder="Tên khách hàng, email..." />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-primary" onclick="applyFilters()">
+                        <i class="fas fa-search"></i> Lọc
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="clearFilters()">
+                        <i class="fas fa-times"></i> Xóa bộ lọc
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="exportToExcel()">
+                        <i class="fas fa-file-excel"></i> Xuất Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" id="bookingsTable">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Mã đặt vé</th>
+                            <th>Khách hàng</th>
+                            <th>Phim</th>
+                            <th>Suất chiếu</th>
+                            <th>Ghế</th>
+                            <th>Tổng tiền</th>
+                            <th>Ngày đặt</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var booking in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>#@booking.Id</strong>
+                                </td>
+                                <td>
+                                    <div>
+                                        <strong>@booking.User.FullName</strong><br />
+                                        <small class="text-muted">@booking.User.Email</small><br />
+                                        <small class="text-muted">@booking.User.PhoneNumber</small>
+                                    </div>
+                                </td>
+                                <td>
+                                    @if (booking.BookingDetails.Any())
+                                    {
+                                        <strong>@booking.BookingDetails.First().ShowTime.Movie.Title</strong>
+
+                                        <br />
+                                        <small class="text-muted">@booking.BookingDetails.First().ShowTime.Movie.Genre</small>
+                                    }
+                                </td>
+                                <td>
+                                    @if (booking.BookingDetails.Any())
+                                    {
+                                        <div>
+                                            <strong>@booking.BookingDetails.First().ShowTime.Room.Name</strong><br />
+                                            <small>@booking.BookingDetails.First().ShowTime.StartTime.ToString("dd/MM/yyyy HH:mm")</small>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    <span class="badge badge-info">
+                                        @string.Join(", ", booking.BookingDetails.Select(bd => bd.Seat.SeatNumber))
+                                    </span>
+                                </td>
+                                <td>
+                                    <strong>@booking.TotalAmount.ToString("N0") VNĐ</strong>
+                                </td>
+                                <td>@booking.BookingTime.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>
+                                    @switch (booking.Status)
+                                    {
+                                        case "Completed":
+                                            <span class="badge badge-success">Đã hoàn thành</span>
+                                            break;
+                                        case "Cancelled":
+                                            <span class="badge badge-danger">Đã hủy</span>
+                                            break;
+                                        case "Pending":
+                                            <span class="badge badge-warning">Chờ thanh toán</span>
+                                            break;
+                                        default:
+                                            <span class="badge badge-secondary">@booking.Status</span>
+                                            break;
+                                    }
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-info"
+                                                onclick="viewBookingDetail(@booking.Id)" title="Xem chi tiết">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        @if (booking.Status == "Completed")
+                                        {
+                                            <a href="@Url.Action("Invoice", "Bookings", new { bookingId = booking.Id })"
+                                               class="btn btn-sm btn-primary" target="_blank" title="In hóa đơn">
+                                                <i class="fas fa-print"></i>
+                                            </a>
+                                        }
+                                        @if (booking.Status != "Cancelled")
+                                        {
+                                            <button type="button" class="btn btn-sm btn-danger"
+                                                    onclick="confirmCancelBooking(@booking.Id)" title="Hủy booking">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Booking Detail Modal -->
+<div class="modal fade" id="bookingDetailModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Chi tiết đặt vé</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" id="bookingDetailContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#bookingsTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Vietnamese.json"
+                },
+                "order": [[6, "desc"]],
+                "pageLength": 25
+            });
+        });
+
+        function applyFilters() {
+            var table = $('#bookingsTable').DataTable();
+            var status = $('#statusFilter').val();
+            var search = $('#searchFilter').val();
+
+            table.columns().search('').draw();
+
+            if (status) {
+                table.column(7).search(status);
+            }
+            if (search) {
+                table.column(1).search(search);
+            }
+
+            table.draw();
+        }
+
+        function clearFilters() {
+            $('#statusFilter, #dateFromFilter, #dateToFilter, #searchFilter').val('');
+            $('#bookingsTable').DataTable().columns().search('').draw();
+        }
+
+        function viewBookingDetail(bookingId) {
+            // Load booking detail content via AJAX
+            $('#bookingDetailContent').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Đang tải...</div>');
+            $('#bookingDetailModal').modal('show');
+
+            // You would implement AJAX call to load booking details
+            // $.get('@Url.Action("GetBookingDetail")', { id: bookingId }, function(data) {
+            //     $('#bookingDetailContent').html(data);
+            // });
+        }
+
+        function confirmCancelBooking(bookingId) {
+            if (confirm('Bạn có chắc chắn muốn hủy booking này?\nLưu ý: Hành động này không thể hoàn tác!')) {
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '@Url.Action("CancelBooking")';
+
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'id';
+                input.value = bookingId;
+                form.appendChild(input);
+
+                var token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                var tokenInput = document.createElement('input');
+                tokenInput.type = 'hidden';
+                tokenInput.name = '__RequestVerificationToken';
+                tokenInput.value = token;
+                form.appendChild(tokenInput);
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+        function exportToExcel() {
+            window.location.href = '@Url.Action("ExportBookings")';
+        }
+    </script>
+}

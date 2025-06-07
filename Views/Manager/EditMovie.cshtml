@@ -1,0 +1,196 @@
+﻿@model OnlineMovieTicket.Models.Movie
+
+@{
+    ViewData["Title"] = "Chỉnh sửa phim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-edit"></i>
+                        Chỉnh sửa thông tin phim
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="EditMovie" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="CreatedAt" />
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label asp-for="Title" class="control-label">Tên phim *</label>
+                                    <input asp-for="Title" class="form-control" placeholder="Nhập tên phim" />
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Genre" class="control-label">Thể loại *</label>
+                                            <select asp-for="Genre" class="form-control">
+                                                <option value="">Chọn thể loại</option>
+                                                <option value="Hành động">Hành động</option>
+                                                <option value="Kinh dị">Kinh dị</option>
+                                                <option value="Hài">Hài</option>
+                                                <option value="Lãng mạn">Lãng mạn</option>
+                                                <option value="Khoa học viễn tưởng">Khoa học viễn tưởng</option>
+                                                <option value="Phiêu lưu">Phiêu lưu</option>
+                                                <option value="Tâm lý">Tâm lý</option>
+                                                <option value="Hoạt hình">Hoạt hình</option>
+                                            </select>
+                                            <span asp-validation-for="Genre" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Duration" class="control-label">Thời lượng (phút) *</label>
+                                            <input asp-for="Duration" type="number" class="form-control" min="1" max="300" />
+                                            <span asp-validation-for="Duration" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Director" class="control-label">Đạo diễn</label>
+                                            <input asp-for="Director" class="form-control" placeholder="Tên đạo diễn" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="ReleaseDate" class="control-label">Ngày khởi chiếu *</label>
+                                            <input asp-for="ReleaseDate" type="date" class="form-control" />
+                                            <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Language" class="control-label">Ngôn ngữ</label>
+                                            <select asp-for="Language" class="form-control">
+                                                <option value="">Chọn ngôn ngữ</option>
+                                                <option value="Tiếng Việt">Tiếng Việt</option>
+                                                <option value="Tiếng Anh">Tiếng Anh</option>
+                                                <option value="Tiếng Trung">Tiếng Trung</option>
+                                                <option value="Tiếng Nhật">Tiếng Nhật</option>
+                                                <option value="Tiếng Hàn">Tiếng Hàn</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Rating" class="control-label">Đánh giá độ tuổi</label>
+                                            <select asp-for="Rating" class="form-control">
+                                                <option value="">Chọn độ tuổi</option>
+                                                <option value="P">P - Phim dành cho mọi lứa tuổi</option>
+                                                <option value="K">K - Phim dành cho trẻ em dưới 13 tuổi</option>
+                                                <option value="T13">T13 - Phim dành cho khán giả từ đủ 13 tuổi trở lên</option>
+                                                <option value="T16">T16 - Phim dành cho khán giả từ đủ 16 tuổi trở lên</option>
+                                                <option value="T18">T18 - Phim dành cho khán giả từ đủ 18 tuổi trở lên</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Cast" class="control-label">Diễn viên</label>
+                                    <textarea asp-for="Cast" class="form-control" rows="3" placeholder="Danh sách diễn viên chính"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Description" class="control-label">Mô tả</label>
+                                    <textarea asp-for="Description" class="form-control" rows="4" placeholder="Mô tả nội dung phim"></textarea>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="TrailerUrl" class="control-label">Link Trailer</label>
+                                            <input asp-for="TrailerUrl" class="form-control" placeholder="https://youtube.com/..." />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Status" class="control-label">Trạng thái</label>
+                                            <select asp-for="Status" class="form-control">
+                                                <option value="ComingSoon">Sắp chiếu</option>
+                                                <option value="NowShowing">Đang chiếu</option>
+                                                <option value="Archived">Ngừng chiếu</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Poster hiện tại</label>
+                                    @if (!string.IsNullOrEmpty(Model.PosterUrl))
+                                    {
+                                        <div class="text-center mb-3">
+                                            <img src="@Model.PosterUrl" alt="Current Poster" class="img-thumbnail" style="max-width: 200px; max-height: 300px;" />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="text-center mb-3">
+                                            <img src="~/images/no-image.png" alt="No Image" class="img-thumbnail" style="max-width: 200px; max-height: 300px;" />
+                                        </div>
+                                    }
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">Cập nhật Poster</label>
+                                    <input type="file" name="posterFile" class="form-control" accept="image/*" />
+                                    <small class="form-text text-muted">
+                                        Chấp nhận: JPG, PNG, GIF (Tối đa 5MB)
+                                    </small>
+                                </div>
+
+                                <input type="hidden" asp-for="PosterUrl" />
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Cập nhật
+                            </button>
+                            <a asp-action="Movies" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Quay lại
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Preview image on file select
+        $('input[name="posterFile"]').change(function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('.img-thumbnail').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+}

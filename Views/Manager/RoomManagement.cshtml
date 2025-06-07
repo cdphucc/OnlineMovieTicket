@@ -1,0 +1,171 @@
+﻿@model IEnumerable<OnlineMovieTicket.Models.Room>
+
+@{
+    ViewData["Title"] = "Quản lý phòng chiếu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-couch"></i>
+                        Quản lý phòng chiếu
+                    </h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addRoomModal">
+                            <i class="fas fa-plus"></i> Thêm phòng chiếu
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="roomsTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tên phòng</th>
+                                    <th>Số ghế</th>
+                                    <th>Suất chiếu hôm nay</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var room in Model)
+                                {
+                                    <tr>
+                                        <td>@room.Id</td>
+                                        <td><strong>@room.Name</strong></td>
+                                        <td>
+                                            <span class="badge badge-info">@room.Seats.Count() ghế</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-primary">
+                                                @room.ShowTimes.Count(st => st.StartTime.Date == DateTime.Today)
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm btn-info view-seats"
+                                                        data-id="@room.Id">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-warning edit-room"
+                                                        data-id="@room.Id">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-danger delete-room"
+                                                        data-id="@room.Id">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Room Modal -->
+<div class="modal fade" id="addRoomModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Thêm phòng chiếu mới</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form id="addRoomForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Tên phòng chiếu *</label>
+                        <input type="text" name="Name" class="form-control" required placeholder="VD: Phòng 1, Phòng VIP..." />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Thêm phòng chiếu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable
+            $('#roomsTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Vietnamese.json"
+                }
+            });
+
+            // Add Room Form Submit
+            $('#addRoomForm').submit(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '@Url.Action("CreateRoom", "Manager")',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function(data) {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert(data.message || 'Có lỗi xảy ra');
+                        }
+                    },
+                    error: function() {
+                        alert('Có lỗi xảy ra khi thêm phòng chiếu');
+                    }
+                });
+            });
+
+            // View Seats
+            $('.view-seats').click(function() {
+                var id = $(this).data('id');
+                window.location.href = '@Url.Action("RoomSeats", "Manager")/' + id;
+            });
+
+            // Edit Room
+            $('.edit-room').click(function() {
+                var id = $(this).data('id');
+                window.location.href = '@Url.Action("EditRoom", "Manager")/' + id;
+            });
+
+            // Delete Room
+            $('.delete-room').click(function() {
+                var id = $(this).data('id');
+                if (confirm('Bạn có chắc chắn muốn xóa phòng chiếu này?\nLưu ý: Tất cả suất chiếu liên quan sẽ bị hủy.')) {
+                    $.ajax({
+                        url: '@Url.Action("DeleteRoom", "Manager")',
+                        type: 'POST',
+                        data: { id: id },
+                        headers: {
+                            'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function(data) {
+                            if (data.success) {
+                                location.reload();
+                            } else {
+                                alert(data.message || 'Có lỗi xảy ra');
+                            }
+                        },
+                        error: function() {
+                            alert('Có lỗi xảy ra khi xóa phòng chiếu');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

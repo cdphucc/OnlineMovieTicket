@@ -1,0 +1,185 @@
+﻿@model OnlineMovieTicket.Models.ShowTime
+
+@{
+    ViewData["Title"] = "Thêm suất chiếu mới";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-4">
+                <i class="fas fa-plus"></i> Thêm suất chiếu mới
+                <a href="@Url.Action("ShowTimeManagement")" class="btn btn-secondary float-right">
+                    <i class="fas fa-arrow-left"></i> Quay lại
+                </a>
+            </h2>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="CreateShowTime" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="MovieId" class="control-label">Phim *</label>
+                            <select asp-for="MovieId" class="form-control" id="movieSelect">
+                                <option value="">-- Chọn phim --</option>
+                                @foreach (var movie in ViewBag.Movies as IEnumerable<OnlineMovieTicket.Models.Movie>)
+                                {
+                                    <option value="@movie.Id" data-duration="@movie.Duration">
+                                        @movie.Title (@movie.Genre - @movie.Duration phút)
+                                    </option>
+                                }
+                            </select>
+                            <span asp-validation-for="MovieId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="RoomId" class="control-label">Phòng chiếu *</label>
+                            <select asp-for="RoomId" class="form-control">
+                                <option value="">-- Chọn phòng chiếu --</option>
+                                @foreach (var room in ViewBag.Rooms as IEnumerable<OnlineMovieTicket.Models.Room>)
+                                {
+                                    <option value="@room.Id">
+                                        @room.Name (@room.Seats.Count() ghế)
+                                    </option>
+                                }
+                            </select>
+                            <span asp-validation-for="RoomId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="StartTime" class="control-label">Ngày giờ chiếu *</label>
+                            <input asp-for="StartTime" class="form-control" type="datetime-local" id="startTimeInput" />
+                            <span asp-validation-for="StartTime" class="text-danger"></span>
+                            <small class="form-text text-muted" id="endTimeInfo"></small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Price" class="control-label">Giá vé (VNĐ) *</label>
+                            <input asp-for="Price" class="form-control" type="number" min="10000" step="1000" placeholder="50000" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-info" id="conflictWarning" style="display: none;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span id="conflictMessage"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-success" id="submitBtn">
+                        <i class="fas fa-save"></i> Thêm suất chiếu
+                    </button>
+                    <a href="@Url.Action("ShowTimeManagement")" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Hủy
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function() {
+            // Calculate end time when movie or start time changes
+            function updateEndTime() {
+                var movieSelect = $('#movieSelect');
+                var startTimeInput = $('#startTimeInput');
+                var duration = movieSelect.find('option:selected').data('duration');
+                var startTime = startTimeInput.val();
+
+                if (duration && startTime) {
+                    var start = new Date(startTime);
+                    var end = new Date(start.getTime() + duration * 60000);
+                    var endTimeStr = end.toLocaleString('sv-SE').substring(11, 16); // Format HH:MM
+                    $('#endTimeInfo').text('Kết thúc dự kiến: ' + endTimeStr);
+
+                    // Check for conflicts
+                    checkConflicts();
+                } else {
+                    $('#endTimeInfo').text('');
+                    $('#conflictWarning').hide();
+                }
+            }
+
+            function checkConflicts() {
+                var movieId = $('#movieSelect').val();
+                var roomId = $('select[name="RoomId"]').val();
+                var startTime = $('#startTimeInput').val();
+
+                if (movieId && roomId && startTime) {
+                    // This would require an AJAX call to check conflicts
+                    // For now, just show a general warning
+                    $('#conflictWarning').show();
+                    $('#conflictMessage').text('Đang kiểm tra xung đột lịch chiếu...');
+
+                    // You would implement an AJAX call here to check conflicts
+                    // $.post('@Url.Action("CheckConflicts")', { movieId, roomId, startTime }, function(result) {
+                    //     if (result.hasConflict) {
+                    //         $('#conflictWarning').show().removeClass('alert-info').addClass('alert-warning');
+                    //         $('#conflictMessage').text(result.message);
+                    //         $('#submitBtn').prop('disabled', true);
+                    //     } else {
+                    //         $('#conflictWarning').hide();
+                    //         $('#submitBtn').prop('disabled', false);
+                    //     }
+                    // });
+
+                    // For demo purposes, hide the warning after a short delay
+                    setTimeout(function() {
+                        $('#conflictWarning').hide();
+                    }, 2000);
+                }
+            }
+
+            $('#movieSelect, #startTimeInput, select[name="RoomId"]').change(updateEndTime);
+
+            // Set minimum datetime to current time
+            var now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            $('#startTimeInput').attr('min', now.toISOString().slice(0, 16));
+        });
+    </script>
+}
