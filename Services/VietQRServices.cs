@@ -28,8 +28,11 @@ namespace OnlineMovieTicket.Services
                            $"&addInfo={Uri.EscapeDataString(request.Description)}" +
                            $"&accountName={Uri.EscapeDataString(request.AccountName)}";
 
+                // Thêm timeout và retry logic
+                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+
                 // Download QR image
-                var imageBytes = await _httpClient.GetByteArrayAsync(qrUrl);
+                var imageBytes = await _httpClient.GetByteArrayAsync(qrUrl, cts.Token);
                 var base64Image = Convert.ToBase64String(imageBytes);
 
                 // Tạo QR Data cho thanh toán
@@ -43,6 +46,52 @@ namespace OnlineMovieTicket.Services
                     BookingId = request.BookingId.ToString(),
                     Amount = request.Amount,
                     Description = request.Description
+                };
+            }
+            catch (HttpRequestException ex)
+            {
+                // Lỗi kết nối - sử dụng QR local
+                var localQR = GenerateLocalQRCode(GenerateQRData(request));
+                if (!string.IsNullOrEmpty(localQR))
+                {
+                    return new VietQRResponseModel
+                    {
+                        Success = true,
+                        QRCode = localQR,
+                        QRDataURL = GenerateQRData(request),
+                        BookingId = request.BookingId.ToString(),
+                        Amount = request.Amount,
+                        Description = request.Description
+                    };
+                }
+
+                return new VietQRResponseModel
+                {
+                    Success = false,
+                    ErrorMessage = $"Lỗi kết nối VietQR API: {ex.Message}"
+                };
+            }
+            catch (TaskCanceledException ex)
+            {
+                // Timeout - sử dụng QR local
+                var localQR = GenerateLocalQRCode(GenerateQRData(request));
+                if (!string.IsNullOrEmpty(localQR))
+                {
+                    return new VietQRResponseModel
+                    {
+                        Success = true,
+                        QRCode = localQR,
+                        QRDataURL = GenerateQRData(request),
+                        BookingId = request.BookingId.ToString(),
+                        Amount = request.Amount,
+                        Description = request.Description
+                    };
+                }
+
+                return new VietQRResponseModel
+                {
+                    Success = false,
+                    ErrorMessage = "Timeout khi tạo QR code"
                 };
             }
             catch (Exception ex)

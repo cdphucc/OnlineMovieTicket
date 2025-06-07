@@ -5,111 +5,134 @@
     var qrResult = ViewBag.QRResult as OnlineMovieTicket.Models.VietQRResponseModel;
 }
 
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-header bg-info text-white text-center">
-                    <h4 class="mb-0"><i class="fas fa-qrcode me-2"></i>Thanh toán QR Code</h4>
+@if (booking == null || qrResult == null)
+{
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="alert alert-danger text-center">
+                    <h4><i class="fas fa-exclamation-triangle me-2"></i>Lỗi</h4>
+                    <p>Không thể tải thông tin thanh toán. Vui lòng thử lại.</p>
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Về trang chủ</a>
                 </div>
-                <div class="card-body text-center">
-
-                    <!-- Thông tin đơn hàng -->
-                    <div class="alert alert-info">
-                        <h5>Thông tin đơn hàng #@booking.Id</h5>
-                        <p><strong>Số tiền:</strong> <span class="text-danger fs-4">@booking.TotalAmount.ToString("n0") VNĐ</span></p>
-                        <p><strong>Nội dung:</strong> @qrResult.Description</p>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-info text-white text-center">
+                        <h4 class="mb-0"><i class="fas fa-qrcode me-2"></i>Thanh toán QR Code</h4>
                     </div>
+                    <div class="card-body text-center">
 
-                    <!-- QR Code -->
-                    <div class="mb-4">
-                        <div class="card border-primary" style="max-width: 350px; margin: 0 auto;">
-                            <div class="card-body">
-                                <h6 class="card-title mb-3">Quét mã QR để thanh toán</h6>
-                                @if (!string.IsNullOrEmpty(qrResult.QRCode))
-                                {
-                                    <img src="@qrResult.QRCode" alt="QR Code" class="img-fluid mb-3" style="max-width: 250px;">
-                                }
-                                else
-                                {
-                                    <div class="alert alert-warning">
-                                        <i class="fas fa-exclamation-triangle me-2"></i>
-                                        Không thể tạo mã QR
-                                    </div>
-                                }
-                            </div>
+                        <!-- Thông tin đơn hàng -->
+                        <div class="alert alert-info">
+                            <h5>Thông tin đơn hàng #@booking.Id</h5>
+                            <p><strong>Số tiền:</strong> <span class="text-danger fs-4">@booking.TotalAmount.ToString("n0") VNĐ</span></p>
+                            <p><strong>Nội dung:</strong> @(qrResult.Description ?? "Thanh toán vé xem phim")</p>
                         </div>
-                    </div>
 
-                    <!-- Hướng dẫn -->
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="card h-100">
+                        <!-- QR Code -->
+                        <div class="mb-4">
+                            <div class="card border-primary" style="max-width: 350px; margin: 0 auto;">
                                 <div class="card-body">
-                                    <h6 class="card-title text-primary">
-                                        <i class="fas fa-mobile-alt me-2"></i>Cách thanh toán
-                                    </h6>
-                                    <ol class="text-start">
-                                        <li>Mở ứng dụng ngân hàng trên điện thoại</li>
-                                        <li>Tìm chức năng "Quét QR" hoặc "QR Code"</li>
-                                        <li>Quét mã QR phía trên</li>
-                                        <li>Xác nhận thông tin và thanh toán</li>
-                                        <li>Quay lại và nhấn "Đã thanh toán"</li>
-                                    </ol>
+                                    <h6 class="card-title mb-3">Quét mã QR để thanh toán</h6>
+                                    @if (!string.IsNullOrEmpty(qrResult.QRCode))
+                                    {
+                                        <img src="@qrResult.QRCode" alt="QR Code" class="img-fluid mb-3" style="max-width: 250px;">
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-warning">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            Không thể tạo mã QR
+                                            @if (!string.IsNullOrEmpty(qrResult.ErrorMessage))
+                                            {
+                                                <br>
+
+                                                <small>@qrResult.ErrorMessage</small>
+                                            }
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h6 class="card-title text-success">
-                                        <i class="fas fa-university me-2"></i>Thông tin tài khoản
-                                    </h6>
-                                    <div class="text-start">
-                                        <p><strong>Ngân hàng:</strong> MBBank</p>
-                                        <p><strong>Chủ TK:</strong> CDPHUCC MOVIE TICKET</p>
-                                        <p><strong>Nội dung:</strong> <span class="text-muted">Tự động điền</span></p>
-                                        <p><strong>Số tiền:</strong> <span class="text-danger">@booking.TotalAmount.ToString("n0") VNĐ</span></p>
+
+                        <!-- Hướng dẫn -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-primary">
+                                            <i class="fas fa-mobile-alt me-2"></i>Cách thanh toán
+                                        </h6>
+                                        <ol class="text-start">
+                                            <li>Mở ứng dụng ngân hàng trên điện thoại</li>
+                                            <li>Tìm chức năng "Quét QR" hoặc "QR Code"</li>
+                                            <li>Quét mã QR phía trên</li>
+                                            <li>Xác nhận thông tin và thanh toán</li>
+                                            <li>Quay lại và nhấn "Đã thanh toán"</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-success">
+                                            <i class="fas fa-university me-2"></i>Thông tin tài khoản
+                                        </h6>
+                                        <div class="text-start">
+                                            <p><strong>Ngân hàng:</strong> BIDV</p>
+                                            <p><strong>Chủ TK:</strong> CHU DUC PHUC</p>
+                                            <p><strong>Nội dung:</strong> <span class="text-muted">Tự động điền</span></p>
+                                            <p><strong>Số tiền:</strong> <span class="text-danger">@booking.TotalAmount.ToString("n0") VNĐ</span></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Countdown Timer -->
-                    <div class="alert alert-warning mb-4">
-                        <i class="fas fa-clock me-2"></i>
-                        <strong>Thời gian còn lại:</strong>
-                        <span id="countdown" class="fs-5 text-danger">15:00</span>
-                    </div>
+                        <!-- Countdown Timer -->
+                        <div class="alert alert-warning mb-4">
+                            <i class="fas fa-clock me-2"></i>
+                            <strong>Thời gian còn lại:</strong>
+                            <span id="countdown" class="fs-5 text-danger">15:00</span>
+                        </div>
 
-                    <!-- Action Buttons -->
-                    <div class="d-grid gap-2">
-                        <form asp-action="ConfirmQRPayment" method="post" id="confirmForm">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="bookingId" value="@booking.Id" />
-                            <button type="submit" class="btn btn-success btn-lg mb-2" id="confirmBtn">
-                                <i class="fas fa-check-circle me-2"></i>Đã thanh toán xong
-                            </button>
-                        </form>
+                        <!-- Action Buttons -->
+                        <div class="d-grid gap-2">
+                            <form asp-action="ConfirmQRPayment" method="post" id="confirmForm">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="bookingId" value="@booking.Id" />
+                                <button type="submit" class="btn btn-success btn-lg mb-2" id="confirmBtn">
+                                    <i class="fas fa-check-circle me-2"></i>Đã thanh toán xong
+                                </button>
+                            </form>
 
-                        <a href="@Url.Action("Payment", new { bookingId = booking.Id })" class="btn btn-outline-secondary">
-                            <i class="fas fa-arrow-left me-1"></i>Chọn phương thức khác
-                        </a>
-                    </div>
+                            <a href="@Url.Action("PaymentQR", new { bookingId = booking.Id })" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>Chọn phương thức khác
+                            </a>
+                        </div>
 
-                    <!-- Auto-refresh notification -->
-                    <div class="mt-3">
-                        <small class="text-muted">
-                            <i class="fas fa-sync-alt me-1"></i>
-                            Trang sẽ tự động kiểm tra thanh toán sau mỗi 30 giây
-                        </small>
+                        <!-- Auto-refresh notification -->
+                        <div class="mt-3">
+                            <small class="text-muted">
+                                <i class="fas fa-sync-alt me-1"></i>
+                                Trang sẽ tự động kiểm tra thanh toán sau mỗi 30 giây
+                            </small>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+}
 
 <style>
     .countdown-expired {
@@ -130,7 +153,7 @@
 
 <script>
     // Countdown Timer (15 minutes)
-    let timeLeft = 15 * 60; // 15 minutes in seconds
+    let timeLeft = 7 * 60; // 15 minutes in seconds
 
     function updateCountdown() {
         const minutes = Math.floor(timeLeft / 60);
@@ -138,23 +161,29 @@
         const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
         const countdownElement = document.getElementById('countdown');
-        countdownElement.textContent = display;
+        if (countdownElement) {
+            countdownElement.textContent = display;
 
-        if (timeLeft <= 300) { // 5 minutes left
-            countdownElement.classList.add('countdown-expired');
-        }
+            // SỬA LỖI: Dùng cách khác thay vì <=
+            if (timeLeft < 301) { // 5 minutes left (300 seconds + 1)
+                countdownElement.classList.add('countdown-expired');
+            }
 
-        if (timeLeft <= 0) {
-            clearInterval(countdownInterval);
-            countdownElement.textContent = 'Hết thời gian';
-            document.getElementById('confirmBtn').disabled = true;
-            document.getElementById('confirmBtn').innerHTML = '<i class="fas fa-times-circle me-2"></i>Hết thời gian thanh toán';
-            document.getElementById('confirmBtn').className = 'btn btn-danger btn-lg mb-2';
+            if (timeLeft < 1) { // Thay vì <= 0
+                clearInterval(countdownInterval);
+                countdownElement.textContent = 'Hết thời gian';
+                const confirmBtn = document.getElementById('confirmBtn');
+                if (confirmBtn) {
+                    confirmBtn.disabled = true;
+                    confirmBtn.innerHTML = '<i class="fas fa-times-circle me-2"></i>Hết thời gian thanh toán';
+                    confirmBtn.className = 'btn btn-danger btn-lg mb-2';
+                }
 
-            setTimeout(() => {
-                window.location.href = '@Url.Action("Payment", new { bookingId = booking.Id })';
-            }, 3000);
-            return;
+                setTimeout(() => {
+                    window.location.href = '@Url.Action("Payment", new { bookingId = booking.Id })';
+                }, 3000);
+                return;
+            }
         }
 
         timeLeft--;
@@ -163,22 +192,21 @@
     const countdownInterval = setInterval(updateCountdown, 1000);
     updateCountdown(); // Initial call
 
-    // Auto-refresh to check payment status (every 30 seconds)
-    // setInterval(() => {
-    //     // Here you could implement automatic payment status checking
-    //     console.log('Checking payment status...');
-    // }, 30000);
-
     // Confirm form submission
-    document.getElementById('confirmForm').addEventListener('submit', function(e) {
-        const confirmed = confirm('Bạn có chắc chắn đã thanh toán xong?');
-        if (!confirmed) {
-            e.preventDefault();
-            return false;
-        }
+    const confirmForm = document.getElementById('confirmForm');
+    if (confirmForm) {
+        confirmForm.addEventListener('submit', function(e) {
+            const confirmed = confirm('Bạn có chắc chắn đã thanh toán xong?');
+            if (!confirmed) {
+                e.preventDefault();
+                return false;
+            }
 
-        const btn = document.getElementById('confirmBtn');
-        btn.disabled = true;
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang xác nhận...';
-    });
+            const btn = document.getElementById('confirmBtn');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang xác nhận...';
+            }
+        });
+    }
 </script>

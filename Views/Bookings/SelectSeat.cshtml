@@ -2,6 +2,7 @@
     var showTime = (OnlineMovieTicket.Models.ShowTime)ViewBag.ShowTime;
     var seats = (List<OnlineMovieTicket.Models.Seat>)ViewBag.Seats;
     var bookedSeatIds = (List<int>)ViewBag.BookedSeatIds;
+	var movieTitle = showTime.Movie.Title;
     ViewBag.Title = "Đặt vé";
     var rows = seats.Select(s => s.SeatNumber.Substring(0, 1)).Distinct().OrderBy(x => x).ToList();
     var maxCol = seats.Select(s => int.Parse(s.SeatNumber.Substring(1))).Max();
@@ -108,8 +109,11 @@
         margin-top: 14px;
     }
 </style>
-
-<div style="margin:4px 0 0 0;font-size:16px;">
+@* Hiện tiêu đề phim *@
+<div style="">
+	Phim: @movieTitle.Replace("'", "&#39;")
+</div>
+    <div style="margin:4px 0 0 0;font-size:16px;">
     Suất chiếu: @showTime.StartTime.ToString("dd/MM/yyyy HH:mm")
 </div>
 <div class="seat-layout-container">
@@ -156,11 +160,8 @@
                 <b>Thông tin vé</b>
                 <div id="ticketInfoContent"></div>
             </div>
-            <!-- Trong phần form đặt vé, thay đổi button text -->
-            <button type="submit" class="btn btn-success btn-lg w-100" id="bookBtn">
-                <i class="fas fa-qrcode me-2"></i>Đặt vé và thanh toán QR
-            </button>
-        </div>
+            <button type="submit" id="bookBtn" class="btn btn-primary" form="bookingForm">Đặt vé</button>
+        </div>  
     </div>
 </div>
 

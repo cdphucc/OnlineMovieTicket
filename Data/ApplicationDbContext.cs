@@ -48,13 +48,13 @@ namespace OnlineMovieTicket.Data
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Booking>()
                 .Property(b => b.TotalAmount)
-                .HasPrecision(18, 2);
+                .HasPrecision(18, 0);
             modelBuilder.Entity<Payment>()
                 .Property(p => p.Amount)
-                .HasPrecision(18, 2);
+                .HasPrecision(18, 0);
             modelBuilder.Entity<ShowTime>()
                 .Property(st => st.Price)
-                .HasPrecision(18, 2);
+                .HasPrecision(18, 0);
         }  
     }
 }
